@@ -1,7 +1,7 @@
 package signature
 
 import (
-	"boiler-plate-clean/pkg/exception"
+	"books-api/pkg/exception"
 	"bytes"
 	"crypto"
 	"crypto/hmac"
@@ -66,7 +66,7 @@ type JwtAuthenticationRes struct {
 func (s *Signature) GenerateJWT(username string) (string, error) {
 	claims := JWTClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:    "boiler-plate-clean",
+			Issuer:    "books-api",
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(1 * time.Hour)),
 		},
 		Username: username,

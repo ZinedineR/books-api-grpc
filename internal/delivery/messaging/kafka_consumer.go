@@ -1,7 +1,7 @@
 package messaging
 
 import (
-	kafkaserver "boiler-plate-clean/pkg/broker/kafkaservice"
+	kafkaserver "books-api/pkg/broker/kafkaservice"
 	"context"
 	"github.com/segmentio/kafka-go"
 	"log/slog"

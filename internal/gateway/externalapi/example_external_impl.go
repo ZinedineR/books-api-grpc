@@ -1,8 +1,8 @@
 package externalapi
 
 import (
-	"boiler-plate-clean/config"
-	"boiler-plate-clean/pkg/httpclient"
+	"books-api/config"
+	"books-api/pkg/httpclient"
 	"encoding/base64"
 )
 

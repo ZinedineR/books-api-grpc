@@ -1,7 +1,7 @@
 package messaging
 
 import (
-	kafkaserver "boiler-plate-clean/pkg/broker/kafkaservice"
+	kafkaserver "books-api/pkg/broker/kafkaservice"
 	"context"
 	"encoding/json"
 	"log/slog"
