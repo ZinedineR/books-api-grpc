@@ -210,7 +210,7 @@ const docTemplate = `{
                 "tags": [
                     "Authors"
                 ],
-                "summary": "List authors",
+                "summary": "Find authors",
                 "parameters": [
                     {
                         "type": "string",
@@ -570,7 +570,7 @@ const docTemplate = `{
                 "tags": [
                     "Books"
                 ],
-                "summary": "List books",
+                "summary": "Find books",
                 "parameters": [
                     {
                         "type": "string",

@@ -2,7 +2,7 @@ package main
 
 import (
 	"books-api/config"
-	"books-api/internal/delivery/http"
+	"books-api/internal/delivery/grpc"
 	api "books-api/internal/delivery/http/middleware"
 	"books-api/internal/delivery/http/route"
 	"books-api/internal/repository"
@@ -58,30 +58,23 @@ func main() {
 		AllowHeaders: conf.AppEnvConfig.AllowHeaders,
 	})
 	// external
-	signaturer := signature.NewSignature(conf.AuthConfig.JwtSecretAccessToken, conf.AuthConfig.HMACSecretAccessToken)
+	signaturer := signature.NewSignature(conf.AuthConfig.JwtSecretAccessToken)
 	// repository
-	booksRepository := repository.NewBookSQLRepository()
-	authorRepository := repository.NewAuthorSQLRepository()
+	//booksRepository := repository.NewBookSQLRepository()
+	//authorRepository := repository.NewAuthorSQLRepository()
 	userRepository := repository.NewUserSQLRepository()
 
 	// service
-	booksService := services.NewBookService(sqlClientRepo.GetDB(), booksRepository, validate)
-	authorService := services.NewAuthorService(sqlClientRepo.GetDB(), authorRepository, validate)
+	//booksService := services.NewBookService(sqlClientRepo.GetDB(), booksRepository, validate)
+	//authorService := services.NewAuthorService(sqlClientRepo.GetDB(), authorRepository, validate)
 	userService := services.NewUserService(sqlClientRepo.GetDB(), userRepository, signaturer, validate)
 	// Handler
-	authMiddleware := api.NewAuthMiddleware(signaturer)
-	signatureHandler := http.NewSignatureHTTPHandler(signaturer)
-	booksHandler := http.NewBookHTTPHandler(booksService)
-	authorHandler := http.NewAuthorHTTPHandler(authorService)
-	userHandler := http.NewUserHTTPHandler(userService)
+	GRPCHandler := grpc.NewUserGRPCHandler(userService)
 
 	router := route.Router{
-		App:              ginServer.App,
-		BookHandler:      booksHandler,
-		AuthorHandler:    authorHandler,
-		UserHandler:      userHandler,
-		AuthMiddleware:   authMiddleware,
-		SignatureHandler: signatureHandler,
+		App:            ginServer.App,
+		GRPCHandler:    grpc.NewBaseGRPCHandler(GRPCHandler),
+		AuthMiddleware: api.NewAuthMiddleware(signaturer),
 	}
 	router.Setup()
 	router.SwaggerRouter()

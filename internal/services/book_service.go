@@ -1,7 +1,6 @@
 package service
 
 import (
-	"books-api/internal/entity"
 	"books-api/internal/model"
 	"books-api/internal/repository"
 	"context"
@@ -29,82 +28,84 @@ func NewBookService(
 }
 
 func (s *BookServiceImpl) Create(
-	ctx context.Context, model *entity.UpsertBook,
-) *exception.Exception {
+	ctx context.Context, req *model.CreateBookReq,
+) (*model.CreateBookRes, *exception.Exception) {
 	tx := s.db.Begin()
 	defer tx.Rollback()
-	if errs := s.validate.Struct(model); errs != nil {
-		return exception.InvalidArgument(errs)
+	if errs := s.validate.Struct(req); errs != nil {
+		return nil, exception.InvalidArgument(errs)
 	}
-	body := &entity.Book{}
-	body.GenerateModel(model)
+	body := req.ToEntity()
 	if err := s.bookRepo.CreateTx(ctx, tx, body); err != nil {
-		return exception.Internal("err", err)
+		return nil, exception.Internal("err", err)
 	}
 
 	if err := tx.Commit().Error; err != nil {
-		return exception.Internal("commit transaction", err)
+		return nil, exception.Internal("commit transaction", err)
 	}
-	return nil
-}
-
-func (s *BookServiceImpl) Update(
-	ctx context.Context, id string, model *entity.UpsertBook,
-) *exception.Exception {
-	tx := s.db.Begin()
-	defer tx.Rollback()
-	if errs := s.validate.Struct(model); errs != nil {
-		return exception.InvalidArgument(errs)
-	}
-	body := &entity.Book{Id: id}
-	body.GenerateModel(model)
-	if err := s.bookRepo.UpdateTx(ctx, tx, body); err != nil {
-		return exception.Internal("err", err)
-	}
-	if err := tx.Commit().Error; err != nil {
-		return exception.Internal("commit transaction", err)
-	}
-	return nil
-}
-
-func (s *BookServiceImpl) Delete(
-	ctx context.Context, id string,
-) *exception.Exception {
-	tx := s.db.Begin()
-	defer tx.Rollback()
-
-	if err := s.bookRepo.DeleteByIDTx(ctx, tx, id); err != nil {
-		return exception.Internal("err", err)
-	}
-	if err := tx.Commit().Error; err != nil {
-		return exception.Internal("commit transaction", err)
-	}
-	return nil
-}
-
-func (s *BookServiceImpl) List(ctx context.Context, req model.ListReq) (
-	*ListBookResp, *exception.Exception,
-) {
-	result, err := s.bookRepo.FindByPagination(ctx, s.db, req.Page, req.Order, req.Filter)
-	if err != nil {
-		return nil, exception.Internal("failed to get book", err)
-	}
-	return &ListBookResp{
-		Pagination: &model.Pagination{
-			Page:             result.Page,
-			PageSize:         result.PageSize,
-			TotalPage:        result.TotalPage,
-			TotalDataPerPage: result.TotalDataPerPage,
-			TotalData:        result.TotalData,
-		},
-		Data: result.Data,
+	return &model.CreateBookRes{
+		Book: *body,
 	}, nil
 }
 
-func (s *BookServiceImpl) FindOne(ctx context.Context, id string) (*entity.Book, *exception.Exception) {
-	result, err := s.bookRepo.FindByID(ctx, s.db, id)
+func (s *BookServiceImpl) Update(
+	ctx context.Context, req *model.UpdateBookReq,
+) (*model.UpdateBookRes, *exception.Exception) {
+	tx := s.db.Begin()
+	defer tx.Rollback()
+	if errs := s.validate.Struct(req); errs != nil {
+		return nil, exception.InvalidArgument(errs)
+	}
+	body := req.ToEntity()
+	body.Id = req.ID
+	if err := s.bookRepo.UpdateTx(ctx, tx, body); err != nil {
+		return nil, exception.Internal("err", err)
+	}
+	if err := tx.Commit().Error; err != nil {
+		return nil, exception.Internal("commit transaction", err)
+	}
+	return &model.UpdateBookRes{
+		Book: *body,
+	}, nil
+}
+
+func (s *BookServiceImpl) Delete(ctx context.Context, req *model.DeleteBookReq) (
+	*model.DeleteBookRes, *exception.Exception,
+) {
+	tx := s.db.Begin()
+	defer tx.Rollback()
+
+	if err := s.bookRepo.DeleteByIDTx(ctx, tx, req.ID); err != nil {
+		return nil, exception.Internal("err", err)
+	}
+	if err := tx.Commit().Error; err != nil {
+		return nil, exception.Internal("commit transaction", err)
+	}
+	return &model.DeleteBookRes{
+		ID: req.ID,
+	}, nil
+}
+
+func (s *BookServiceImpl) Find(ctx context.Context, req *model.GetAllBookReq) (
+	*model.GetAllBookRes, *exception.Exception,
+) {
+	result, err := s.bookRepo.FindByPagination(ctx, s.db, req.Page, req.Sort, req.Filter)
+	if err != nil {
+		return nil, exception.Internal("failed to get book", err)
+	}
+	return &model.GetAllBookRes{
+		PaginationData: *result,
+	}, nil
+}
+
+func (s *BookServiceImpl) Detail(ctx context.Context, req *model.GetBookByIDReq) (
+	*model.GetBookByIDRes, *exception.Exception,
+) {
+	result, err := s.bookRepo.FindByID(ctx, s.db, req.ID)
 	if err != nil {
 		return nil, exception.Internal("err", err)
 	}
-	return result, nil
+	return &model.GetBookByIDRes{
+		Book: *result,
+	}, nil
 }

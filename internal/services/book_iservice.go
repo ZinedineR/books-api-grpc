@@ -1,7 +1,6 @@
 package service
 
 import (
-	"books-api/internal/entity"
 	"books-api/internal/model"
 	"books-api/pkg/exception"
 	"context"
@@ -10,21 +9,12 @@ import (
 type BookService interface {
 	// CRUD operations for Book
 	Create(
-		ctx context.Context, model *entity.UpsertBook,
-	) *exception.Exception
+		ctx context.Context, req *model.CreateBookReq,
+	) (*model.CreateBookRes, *exception.Exception)
 	Update(
-		ctx context.Context, id string, model *entity.UpsertBook,
-	) *exception.Exception
-	Delete(
-		ctx context.Context, id string,
-	) *exception.Exception
-	List(ctx context.Context, req model.ListReq) (
-		*ListBookResp, *exception.Exception,
-	)
-	FindOne(ctx context.Context, id string) (*entity.Book, *exception.Exception)
-}
-
-type ListBookResp struct {
-	Pagination *model.Pagination `json:"pagination"`
-	Data       []*entity.Book    `json:"data"`
+		ctx context.Context, req *model.UpdateBookReq,
+	) (*model.UpdateBookRes, *exception.Exception)
+	Find(ctx context.Context, req *model.GetAllBookReq) (*model.GetAllBookRes, *exception.Exception)
+	Detail(ctx context.Context, req *model.GetBookByIDReq) (*model.GetBookByIDRes, *exception.Exception)
+	Delete(ctx context.Context, req *model.DeleteBookReq) (*model.DeleteBookRes, *exception.Exception)
 }

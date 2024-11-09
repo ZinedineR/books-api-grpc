@@ -1,6 +1,9 @@
 package model
 
-import "books-api/internal/entity"
+import (
+	"books-api/internal/entity"
+	"github.com/google/uuid"
+)
 
 type BaseUserReq struct {
 	Username string `json:"username" validate:"required" example:"john_doe"`
@@ -11,10 +14,11 @@ type CreateUserReq struct {
 	BaseUserReq
 }
 
-func (req BaseUserReq) ToEntity() *entity.User {
+func (req BaseUserReq) ToEntity(password string) *entity.User {
 	return &entity.User{
+		Id:       uuid.NewString(),
 		Username: req.Username,
-		Password: req.Password,
+		Password: password,
 	}
 }
 
@@ -22,9 +26,15 @@ type CreateUserRes struct {
 	entity.User
 }
 
+type LoginUserRes struct {
+	Username string `json:"username" example:"john_doe"`
+	Token    string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9"` // JWT token example
+
+}
+
 type UpdateUserReq struct {
 	BaseUserReq
-	ID string `json:"id" name:"id"`
+	ID string
 }
 type UpdateUserRes struct {
 	entity.User
@@ -32,10 +42,10 @@ type UpdateUserRes struct {
 
 type DeleteUserReq struct {
 	BaseUserReq
-	ID string `json:"id" name:"id"`
+	ID string //uuid, will be get from query handler
 }
 type DeleteUserRes struct {
-	ID string `json:"id" name:"id"`
+	ID string //uuid, will be get from query handler
 }
 
 type GetAllUserReq struct {

@@ -54,6 +54,66 @@ func (_m *AuthorRepository) DeleteByIDTx(ctx context.Context, tx *gorm.DB, id st
 	return r0
 }
 
+// Find provides a mock function with given fields: ctx, tx, order, filter
+func (_m *AuthorRepository) Find(ctx context.Context, tx *gorm.DB, order model.OrderParam, filter model.FilterParams) (*[]entity.Author, error) {
+	ret := _m.Called(ctx, tx, order, filter)
+
+	if len(ret) == 0 {
+		panic("no return value specified for Find")
+	}
+
+	var r0 *[]entity.Author
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *gorm.DB, model.OrderParam, model.FilterParams) (*[]entity.Author, error)); ok {
+		return rf(ctx, tx, order, filter)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *gorm.DB, model.OrderParam, model.FilterParams) *[]entity.Author); ok {
+		r0 = rf(ctx, tx, order, filter)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*[]entity.Author)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *gorm.DB, model.OrderParam, model.FilterParams) error); ok {
+		r1 = rf(ctx, tx, order, filter)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
+// FindByFilter provides a mock function with given fields: ctx, tx, filter, order
+func (_m *AuthorRepository) FindByFilter(ctx context.Context, tx *gorm.DB, filter model.FilterParams, order model.OrderParam) (*entity.Author, error) {
+	ret := _m.Called(ctx, tx, filter, order)
+
+	if len(ret) == 0 {
+		panic("no return value specified for FindByFilter")
+	}
+
+	var r0 *entity.Author
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, *gorm.DB, model.FilterParams, model.OrderParam) (*entity.Author, error)); ok {
+		return rf(ctx, tx, filter, order)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, *gorm.DB, model.FilterParams, model.OrderParam) *entity.Author); ok {
+		r0 = rf(ctx, tx, filter, order)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*entity.Author)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, *gorm.DB, model.FilterParams, model.OrderParam) error); ok {
+		r1 = rf(ctx, tx, filter, order)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
+}
+
 // FindByID provides a mock function with given fields: ctx, tx, id
 func (_m *AuthorRepository) FindByID(ctx context.Context, tx *gorm.DB, id string) (*entity.Author, error) {
 	ret := _m.Called(ctx, tx, id)
@@ -77,36 +137,6 @@ func (_m *AuthorRepository) FindByID(ctx context.Context, tx *gorm.DB, id string
 
 	if rf, ok := ret.Get(1).(func(context.Context, *gorm.DB, string) error); ok {
 		r1 = rf(ctx, tx, id)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
-// FindByName provides a mock function with given fields: ctx, tx, column, value
-func (_m *AuthorRepository) FindByName(ctx context.Context, tx *gorm.DB, column string, value string) (*entity.Author, error) {
-	ret := _m.Called(ctx, tx, column, value)
-
-	if len(ret) == 0 {
-		panic("no return value specified for FindByName")
-	}
-
-	var r0 *entity.Author
-	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, *gorm.DB, string, string) (*entity.Author, error)); ok {
-		return rf(ctx, tx, column, value)
-	}
-	if rf, ok := ret.Get(0).(func(context.Context, *gorm.DB, string, string) *entity.Author); ok {
-		r0 = rf(ctx, tx, column, value)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*entity.Author)
-		}
-	}
-
-	if rf, ok := ret.Get(1).(func(context.Context, *gorm.DB, string, string) error); ok {
-		r1 = rf(ctx, tx, column, value)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -144,12 +174,48 @@ func (_m *AuthorRepository) FindByPagination(ctx context.Context, tx *gorm.DB, p
 	return r0, r1
 }
 
+// UpdateAssociationMany2ManyTx provides a mock function with given fields: tx, data
+func (_m *AuthorRepository) UpdateAssociationMany2ManyTx(tx *gorm.DB, data *entity.Author) error {
+	ret := _m.Called(tx, data)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateAssociationMany2ManyTx")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(*gorm.DB, *entity.Author) error); ok {
+		r0 = rf(tx, data)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
 // UpdateTx provides a mock function with given fields: ctx, tx, data
 func (_m *AuthorRepository) UpdateTx(ctx context.Context, tx *gorm.DB, data *entity.Author) error {
 	ret := _m.Called(ctx, tx, data)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UpdateTx")
+	}
+
+	var r0 error
+	if rf, ok := ret.Get(0).(func(context.Context, *gorm.DB, *entity.Author) error); ok {
+		r0 = rf(ctx, tx, data)
+	} else {
+		r0 = ret.Error(0)
+	}
+
+	return r0
+}
+
+// UpdateTxWithAssociations provides a mock function with given fields: ctx, tx, data
+func (_m *AuthorRepository) UpdateTxWithAssociations(ctx context.Context, tx *gorm.DB, data *entity.Author) error {
+	ret := _m.Called(ctx, tx, data)
+
+	if len(ret) == 0 {
+		panic("no return value specified for UpdateTxWithAssociations")
 	}
 
 	var r0 error

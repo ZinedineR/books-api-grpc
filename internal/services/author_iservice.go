@@ -10,18 +10,14 @@ import (
 type AuthorService interface {
 	// CRUD operations for Author
 	Create(
-		ctx context.Context, model *entity.UpsertAuthor,
-	) *exception.Exception
+		ctx context.Context, req *model.CreateAuthorReq,
+	) (*model.CreateAuthorRes, *exception.Exception)
 	Update(
-		ctx context.Context, id string, model *entity.UpsertAuthor,
-	) *exception.Exception
-	Delete(
-		ctx context.Context, id string,
-	) *exception.Exception
-	List(ctx context.Context, req model.ListReq) (
-		*ListAuthorResp, *exception.Exception,
-	)
-	FindOne(ctx context.Context, id string) (*entity.Author, *exception.Exception)
+		ctx context.Context, req *model.UpdateAuthorReq,
+	) (*model.UpdateAuthorRes, *exception.Exception)
+	Find(ctx context.Context, req *model.GetAllAuthorReq) (*model.GetAllAuthorRes, *exception.Exception)
+	Detail(ctx context.Context, req *model.GetAuthorByIDReq) (*model.GetAuthorByIDRes, *exception.Exception)
+	Delete(ctx context.Context, req *model.DeleteAuthorReq) (*model.DeleteAuthorRes, *exception.Exception)
 }
 
 type ListAuthorResp struct {

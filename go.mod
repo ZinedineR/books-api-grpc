@@ -13,6 +13,7 @@ require (
 	github.com/go-playground/validator/v10 v10.22.1
 	github.com/golang-jwt/jwt/v4 v4.5.0
 	github.com/google/uuid v1.6.0
+	github.com/grpc-ecosystem/grpc-gateway/v2 v2.23.0
 	github.com/samber/slog-gin v1.13.5
 	github.com/segmentio/kafka-go v0.4.47
 	github.com/sirupsen/logrus v1.9.3
@@ -21,9 +22,10 @@ require (
 	github.com/swaggo/files v1.0.1
 	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.3
-	github.com/tdewolff/minify v2.3.6+incompatible
-	github.com/tdewolff/minify/v2 v2.20.37
 	golang.org/x/crypto v0.28.0
+	google.golang.org/genproto/googleapis/api v0.0.0-20241021214115-324edc3d5d38
+	google.golang.org/grpc v1.67.1
+	google.golang.org/protobuf v1.35.1
 	gorm.io/driver/mysql v1.5.7
 	gorm.io/driver/postgres v1.5.9
 	gorm.io/driver/sqlserver v1.5.3
@@ -87,8 +89,6 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/tdewolff/parse v2.3.4+incompatible // indirect
-	github.com/tdewolff/parse/v2 v2.7.16 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
@@ -96,7 +96,6 @@ require (
 	github.com/xdg-go/stringprep v1.0.4 // indirect
 	go.opentelemetry.io/otel v1.30.0 // indirect
 	go.opentelemetry.io/otel/trace v1.30.0 // indirect
-	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/arch v0.11.0 // indirect
 	golang.org/x/exp v0.0.0-20241004190924-225e2abe05e6 // indirect
@@ -105,7 +104,7 @@ require (
 	golang.org/x/sys v0.26.0 // indirect
 	golang.org/x/text v0.19.0 // indirect
 	golang.org/x/tools v0.26.0 // indirect
-	google.golang.org/protobuf v1.34.2 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20241021214115-324edc3d5d38 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	modernc.org/libc v1.61.0 // indirect

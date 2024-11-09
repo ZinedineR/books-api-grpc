@@ -150,7 +150,7 @@ func TestListBook(t *testing.T) {
 		validate, _ := xvalidator.NewValidator()
 		mockService := service.NewBookService(gormDB, mockRepository, validate)
 		// Call the function under test
-		result, errService := mockService.List(mockAppCtx, req)
+		result, errService := mockService.Find(mockAppCtx, req)
 
 		// Assert the result
 		assert.Nil(t, errService)
@@ -164,7 +164,7 @@ func TestListBook(t *testing.T) {
 		validate, _ := xvalidator.NewValidator()
 		mockService := service.NewBookService(gormDB, mockRepository, validate)
 		// Call the function under test
-		result, errService := mockService.List(mockAppCtx, req)
+		result, errService := mockService.Find(mockAppCtx, req)
 
 		// Assert the result
 		assert.NotNil(t, errService)
@@ -188,7 +188,7 @@ func TestFindOneBook(t *testing.T) {
 		validate, _ := xvalidator.NewValidator()
 		mockService := service.NewBookService(gormDB, mockRepository, validate)
 		// Call the function under test
-		result, errService := mockService.FindOne(mockAppCtx, "0b8d3f3d-d343-4390-964c-4f05c4c803d6")
+		result, errService := mockService.Detail(mockAppCtx, "0b8d3f3d-d343-4390-964c-4f05c4c803d6")
 
 		// Assert the result
 		assert.Nil(t, errService)
@@ -201,7 +201,7 @@ func TestFindOneBook(t *testing.T) {
 		validate, _ := xvalidator.NewValidator()
 		mockService := service.NewBookService(gormDB, mockRepository, validate)
 		// Call the function under test
-		result, errService := mockService.FindOne(mockAppCtx, "0b8d3f3d-d343-4390-964c-4f05c4c803d6")
+		result, errService := mockService.Detail(mockAppCtx, "0b8d3f3d-d343-4390-964c-4f05c4c803d6")
 
 		// Assert the result
 		assert.NotNil(t, errService)

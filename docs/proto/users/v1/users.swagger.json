@@ -1,0 +1,194 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "User Service",
+    "description": "to handle user service",
+    "version": "v1"
+  },
+  "tags": [
+    {
+      "name": "proto.users.v1.UserService"
+    }
+  ],
+  "host": "localhost:8080",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "summary": "Login a user and return a JWT token",
+        "operationId": "Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.users.v1.LoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "register to user with username and password",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.users.v1.LoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "proto.users.v1.UserService"
+        ]
+      }
+    },
+    "/api/v1/auth/register": {
+      "post": {
+        "summary": "Register a new user",
+        "operationId": "Register",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.users.v1.RegisterResponse"
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "schema": {}
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "register to user with username and password",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.users.v1.RegisterRequest"
+            }
+          }
+        ],
+        "tags": [
+          "proto.users.v1.UserService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "proto.users.v1.LoginRequest": {
+      "type": "object",
+      "example": {
+        "username": "john_doe",
+        "password": "Password!1"
+      },
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "Username for login"
+        },
+        "password": {
+          "type": "string",
+          "title": "Password for login"
+        }
+      },
+      "description": "register to user with username and password",
+      "title": "Registering new user",
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "proto.users.v1.LoginResponse": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "Username of the logged-in user"
+        },
+        "token": {
+          "type": "string",
+          "title": "JWT token"
+        }
+      },
+      "title": "Response message for successful user login"
+    },
+    "proto.users.v1.MutationResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "title": "Success or error message"
+        }
+      },
+      "title": "Mutation response for tracking success messages on operations"
+    },
+    "proto.users.v1.RegisterRequest": {
+      "type": "object",
+      "example": {
+        "username": "john_doe",
+        "password": "Password!1"
+      },
+      "properties": {
+        "username": {
+          "type": "string",
+          "title": "Username for registration"
+        },
+        "password": {
+          "type": "string",
+          "title": "Password for registration"
+        }
+      },
+      "description": "register to user with username and password",
+      "title": "Registering new user",
+      "required": [
+        "username",
+        "password"
+      ]
+    },
+    "proto.users.v1.RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "title": "Registered user data",
+          "allOf": [
+            {
+              "$ref": "#/definitions/proto.users.v1.User"
+            }
+          ]
+        },
+        "response": {
+          "title": "General mutation response",
+          "allOf": [
+            {
+              "$ref": "#/definitions/proto.users.v1.MutationResponse"
+            }
+          ]
+        }
+      },
+      "title": "Response message for successful user registration"
+    },
+    "proto.users.v1.User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "User ID"
+        },
+        "username": {
+          "type": "string",
+          "title": "Username"
+        },
+        "password": {
+          "type": "string",
+          "title": "Hashed password"
+        }
+      },
+      "title": "User message that represents user entity"
+    }
+  }
+}

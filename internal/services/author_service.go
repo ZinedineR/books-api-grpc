@@ -1,7 +1,6 @@
 package service
 
 import (
-	"books-api/internal/entity"
 	"books-api/internal/model"
 	"books-api/internal/repository"
 	"context"
@@ -29,82 +28,84 @@ func NewAuthorService(
 }
 
 func (s *AuthorServiceImpl) Create(
-	ctx context.Context, model *entity.UpsertAuthor,
-) *exception.Exception {
+	ctx context.Context, req *model.CreateAuthorReq,
+) (*model.CreateAuthorRes, *exception.Exception) {
 	tx := s.db.Begin()
 	defer tx.Rollback()
-	if errs := s.validate.Struct(model); errs != nil {
-		return exception.InvalidArgument(errs)
+	if errs := s.validate.Struct(req); errs != nil {
+		return nil, exception.InvalidArgument(errs)
 	}
-	body := &entity.Author{}
-	body.GenerateModel(model)
+	body := req.ToEntity()
 	if err := s.authorRepo.CreateTx(ctx, tx, body); err != nil {
-		return exception.Internal("err", err)
+		return nil, exception.Internal("err", err)
 	}
 
 	if err := tx.Commit().Error; err != nil {
-		return exception.Internal("commit transaction", err)
+		return nil, exception.Internal("commit transaction", err)
 	}
-	return nil
-}
-
-func (s *AuthorServiceImpl) Update(
-	ctx context.Context, id string, model *entity.UpsertAuthor,
-) *exception.Exception {
-	tx := s.db.Begin()
-	defer tx.Rollback()
-	if errs := s.validate.Struct(model); errs != nil {
-		return exception.InvalidArgument(errs)
-	}
-	body := &entity.Author{Id: id}
-	body.GenerateModel(model)
-	if err := s.authorRepo.UpdateTx(ctx, tx, body); err != nil {
-		return exception.Internal("err", err)
-	}
-	if err := tx.Commit().Error; err != nil {
-		return exception.Internal("commit transaction", err)
-	}
-	return nil
-}
-
-func (s *AuthorServiceImpl) Delete(
-	ctx context.Context, id string,
-) *exception.Exception {
-	tx := s.db.Begin()
-	defer tx.Rollback()
-
-	if err := s.authorRepo.DeleteByIDTx(ctx, tx, id); err != nil {
-		return exception.Internal("err", err)
-	}
-	if err := tx.Commit().Error; err != nil {
-		return exception.Internal("commit transaction", err)
-	}
-	return nil
-}
-
-func (s *AuthorServiceImpl) List(ctx context.Context, req model.ListReq) (
-	*ListAuthorResp, *exception.Exception,
-) {
-	result, err := s.authorRepo.FindByPagination(ctx, s.db, req.Page, req.Order, req.Filter)
-	if err != nil {
-		return nil, exception.Internal("failed to get author", err)
-	}
-	return &ListAuthorResp{
-		Pagination: &model.Pagination{
-			Page:             result.Page,
-			PageSize:         result.PageSize,
-			TotalPage:        result.TotalPage,
-			TotalDataPerPage: result.TotalDataPerPage,
-			TotalData:        result.TotalData,
-		},
-		Data: result.Data,
+	return &model.CreateAuthorRes{
+		Author: *body,
 	}, nil
 }
 
-func (s *AuthorServiceImpl) FindOne(ctx context.Context, id string) (*entity.Author, *exception.Exception) {
-	result, err := s.authorRepo.FindByID(ctx, s.db, id)
+func (s *AuthorServiceImpl) Update(
+	ctx context.Context, req *model.UpdateAuthorReq,
+) (*model.UpdateAuthorRes, *exception.Exception) {
+	tx := s.db.Begin()
+	defer tx.Rollback()
+	if errs := s.validate.Struct(req); errs != nil {
+		return nil, exception.InvalidArgument(errs)
+	}
+	body := req.ToEntity()
+	body.Id = req.ID
+	if err := s.authorRepo.UpdateTx(ctx, tx, body); err != nil {
+		return nil, exception.Internal("err", err)
+	}
+	if err := tx.Commit().Error; err != nil {
+		return nil, exception.Internal("commit transaction", err)
+	}
+	return &model.UpdateAuthorRes{
+		Author: *body,
+	}, nil
+}
+
+func (s *AuthorServiceImpl) Delete(ctx context.Context, req *model.DeleteAuthorReq) (
+	*model.DeleteAuthorRes, *exception.Exception,
+) {
+	tx := s.db.Begin()
+	defer tx.Rollback()
+
+	if err := s.authorRepo.DeleteByIDTx(ctx, tx, req.ID); err != nil {
+		return nil, exception.Internal("err", err)
+	}
+	if err := tx.Commit().Error; err != nil {
+		return nil, exception.Internal("commit transaction", err)
+	}
+	return &model.DeleteAuthorRes{
+		ID: req.ID,
+	}, nil
+}
+
+func (s *AuthorServiceImpl) Find(ctx context.Context, req *model.GetAllAuthorReq) (
+	*model.GetAllAuthorRes, *exception.Exception,
+) {
+	result, err := s.authorRepo.FindByPagination(ctx, s.db, req.Page, req.Sort, req.Filter)
+	if err != nil {
+		return nil, exception.Internal("failed to get author", err)
+	}
+	return &model.GetAllAuthorRes{
+		PaginationData: *result,
+	}, nil
+}
+
+func (s *AuthorServiceImpl) Detail(ctx context.Context, req *model.GetAuthorByIDReq) (
+	*model.GetAuthorByIDRes, *exception.Exception,
+) {
+	result, err := s.authorRepo.FindByID(ctx, s.db, req.ID)
 	if err != nil {
 		return nil, exception.Internal("err", err)
 	}
-	return result, nil
+	return &model.GetAuthorByIDRes{
+		Author: *result,
+	}, nil
 }

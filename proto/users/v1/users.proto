@@ -1,0 +1,84 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+option go_package = "books-api/proto/users/v1;users";
+
+package proto.users.v1;
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "User Service",
+    version: "v1",
+    description: "to handle user service"
+  },
+  host: "localhost:8080",
+};
+service UserService {
+  // Register a new user
+  rpc Register (RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/register"
+      body: "*"
+    };
+  };
+
+  // Login a user and return a JWT token
+  rpc Login (LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/auth/login"
+      body: "*"
+    };
+  };
+}
+
+// User message that represents user entity
+message User {
+  string id = 1;                            // User ID
+  string username = 2;                      // Username
+  string password = 3;                      // Hashed password
+}
+
+// Request message for registering a new user
+message RegisterRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Registering new user"
+      description: "register to user with username and password"
+      required: ["username", "password"]
+    }
+    example: "{\"username\": \"john_doe\", \"password\": \"Password!1\"}"
+  };
+  string username = 1;                      // Username for registration
+  string password = 2;                      // Password for registration
+}
+
+// Response message for successful user registration
+message RegisterResponse {
+  User user = 1;                            // Registered user data
+  MutationResponse response = 2;            // General mutation response
+}
+
+// Request message for logging in a user
+message LoginRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Registering new user"
+      description: "register to user with username and password"
+      required: ["username", "password"]
+    }
+    example: "{\"username\": \"john_doe\", \"password\": \"Password!1\"}"
+  };
+  string username = 1;                      // Username for login
+  string password = 2;                      // Password for login
+}
+
+// Response message for successful user login
+message LoginResponse {
+  string username = 1;                      // Username of the logged-in user
+  string token = 2;                         // JWT token
+}
+
+// Mutation response for tracking success messages on operations
+message MutationResponse {
+  string message = 1;                       // Success or error message
+}
