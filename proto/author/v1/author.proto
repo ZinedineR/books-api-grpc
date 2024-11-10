@@ -1,0 +1,224 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+option go_package = "books-api/proto/authors/v1;authors";
+
+package proto.authors.v1;
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Author Service",
+    version: "v1",
+    description: "Service to handle author management"
+  },
+  host: "localhost:8081",
+};
+
+service AuthorService {
+  // Create a new author
+  rpc Create (CreateAuthorRequest) returns (CreateAuthorResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/authors"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization";
+          description: "JWT Token: use Bearer <jwt>";
+          type: STRING,
+          required: true;
+        };
+      };
+    };
+  };
+
+  // Update an existing author
+  rpc Update (UpdateAuthorRequest) returns (UpdateAuthorResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/authors/{id}"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization";
+          description: "JWT Token: use Bearer <jwt>";
+          type: STRING,
+          required: true;
+        };
+      };
+    };
+  };
+
+  // Retrieve all authors with pagination
+  rpc Find (GetAllAuthorRequest) returns (GetAllAuthorResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/authors"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization";
+          description: "JWT Token: use Bearer <jwt>";
+          type: STRING,
+          required: true;
+        };
+      };
+    };
+  };
+
+  // Retrieve a specific author by ID
+  rpc Detail (GetAuthorByIDRequest) returns (GetAuthorByIDResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/authors/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization";
+          description: "JWT Token: use Bearer <jwt>";
+          type: STRING,
+          required: true;
+        };
+      };
+    };
+  };
+
+  // Delete an author by ID
+  rpc Delete (DeleteAuthorRequest) returns (DeleteAuthorResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/authors/{id}"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      parameters: {
+        headers: {
+          name: "Authorization";
+          description: "JWT Token: use Bearer <jwt>";
+          type: STRING,
+          required: true;
+        };
+      };
+    };
+  };
+}
+
+// Message representing an author entity
+message Author {
+  string id = 1;                            // Author ID
+  string name = 2;                          // Name of the author
+  google.protobuf.Timestamp birthdate = 3;  // Birthdate of the author
+}
+
+// Request message for creating a new author
+message CreateAuthorRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Create a new author",
+      description: "Details for creating a new author",
+      required: ["name", "birthdate"]
+    }
+    example: "{\"name\": \"Ernest Hemingway\", \"birthdate\": \"1899-07-21\"}"
+  };
+  string name = 1;
+  string birthdate = 2;
+}
+
+// Response message for successful author creation
+message CreateAuthorResponse {
+  Author author = 1;
+  MutationResponse response = 2;
+}
+
+// Request message for updating an author
+message UpdateAuthorRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Update an existing author",
+      description: "Details for updating an existing author",
+      required: ["id", "name", "birthdate"]
+    }
+    example: "{\"id\": \"123e4567-e89b-12d3-a456-426614174000\", \"name\": \"F. Scott Fitzgerald\", \"birthdate\": \"1896-09-24\"}"
+  };
+  string id = 1;
+  string name = 2;
+  string birthdate = 3;
+}
+
+// Response message for successful author update
+message UpdateAuthorResponse {
+  Author author = 1;
+  MutationResponse response = 2;
+}
+
+// Request message for retrieving a paginated list of authors
+message GetAllAuthorRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Retrieve all authors with pagination",
+      description: "Request to retrieve a list of authors with pagination"
+    }
+    example: "{\"page\": 1, \"page_size\": 10, \"filter\": \"name:Ernest\", \"sort\": \"name:asc\"}"
+  };
+  int32 page = 1;
+  int32 page_size = 2;
+  string filter = 3;
+  string sort = 4;
+}
+
+// Response message for retrieving a paginated list of authors
+message GetAllAuthorResponse {
+  PaginationResponse pagination = 1;
+  repeated Author authors = 2;
+  MutationResponse response = 3;
+}
+
+// Request message for retrieving an author by ID
+message GetAuthorByIDRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Retrieve an author by ID",
+      description: "Request to retrieve an author by their ID",
+      required: ["id"]
+    }
+    example: "{\"id\": \"123e4567-e89b-12d3-a456-426614174000\"}"
+  };
+  string id = 1;
+}
+
+// Response message for retrieving a specific author by ID
+message GetAuthorByIDResponse {
+  Author author = 1;
+}
+
+// Request message for deleting an author by ID
+message DeleteAuthorRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Delete an author by ID",
+      description: "Request to delete an author by their ID",
+      required: ["id"]
+    }
+    example: "{\"id\": \"123e4567-e89b-12d3-a456-426614174000\"}"
+  };
+  string id = 1;
+}
+
+// Response message for successful author deletion
+message DeleteAuthorResponse {
+  MutationResponse response = 1;
+}
+
+// Mutation response for tracking success messages on operations
+message MutationResponse {
+  string message = 1;
+}
+
+// Pagination response for paginated requests
+message PaginationResponse {
+  int32 page = 1;
+  int32 page_size = 2;
+  int64 total_pages = 3;
+  int64 total_rows = 4;
+}

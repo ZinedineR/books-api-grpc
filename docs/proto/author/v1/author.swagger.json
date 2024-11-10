@@ -1,16 +1,16 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Book Service",
-    "description": "Service to handle book management",
+    "title": "Author Service",
+    "description": "Service to handle author management",
     "version": "v1"
   },
   "tags": [
     {
-      "name": "proto.books.v1.BookService"
+      "name": "proto.authors.v1.AuthorService"
     }
   ],
-  "host": "localhost:8082",
+  "host": "localhost:8081",
   "consumes": [
     "application/json"
   ],
@@ -18,22 +18,21 @@
     "application/json"
   ],
   "paths": {
-    "/api/v1/books": {
+    "/api/v1/authors": {
       "get": {
-        "summary": "Retrieve all books with pagination",
+        "summary": "Retrieve all authors with pagination",
         "operationId": "Find",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/proto.books.v1.GetAllBookResponse"
+              "$ref": "#/definitions/proto.authors.v1.GetAllAuthorResponse"
             }
           }
         },
         "parameters": [
           {
             "name": "page",
-            "description": "Page number for pagination",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -41,7 +40,6 @@
           },
           {
             "name": "pageSize",
-            "description": "Page size for pagination",
             "in": "query",
             "required": false,
             "type": "integer",
@@ -49,14 +47,12 @@
           },
           {
             "name": "filter",
-            "description": "Filter criteria",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
             "name": "sort",
-            "description": "Sort order",
             "in": "query",
             "required": false,
             "type": "string"
@@ -70,28 +66,28 @@
           }
         ],
         "tags": [
-          "proto.books.v1.BookService"
+          "proto.authors.v1.AuthorService"
         ]
       },
       "post": {
-        "summary": "Create a new book",
+        "summary": "Create a new author",
         "operationId": "Create",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/proto.books.v1.CreateBookResponse"
+              "$ref": "#/definitions/proto.authors.v1.CreateAuthorResponse"
             }
           }
         },
         "parameters": [
           {
             "name": "body",
-            "description": "Details for creating a new book",
+            "description": "Details for creating a new author",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/proto.books.v1.CreateBookRequest"
+              "$ref": "#/definitions/proto.authors.v1.CreateAuthorRequest"
             }
           },
           {
@@ -103,26 +99,25 @@
           }
         ],
         "tags": [
-          "proto.books.v1.BookService"
+          "proto.authors.v1.AuthorService"
         ]
       }
     },
-    "/api/v1/books/{id}": {
+    "/api/v1/authors/{id}": {
       "get": {
-        "summary": "Retrieve a specific book by ID",
+        "summary": "Retrieve a specific author by ID",
         "operationId": "Detail",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/proto.books.v1.GetBookByIDResponse"
+              "$ref": "#/definitions/proto.authors.v1.GetAuthorByIDResponse"
             }
           }
         },
         "parameters": [
           {
             "name": "id",
-            "description": "ID of the book to retrieve",
             "in": "path",
             "required": true,
             "type": "string"
@@ -136,24 +131,23 @@
           }
         ],
         "tags": [
-          "proto.books.v1.BookService"
+          "proto.authors.v1.AuthorService"
         ]
       },
       "delete": {
-        "summary": "Delete a book by ID",
+        "summary": "Delete an author by ID",
         "operationId": "Delete",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/proto.books.v1.DeleteBookResponse"
+              "$ref": "#/definitions/proto.authors.v1.DeleteAuthorResponse"
             }
           }
         },
         "parameters": [
           {
             "name": "id",
-            "description": "ID of the book to delete",
             "in": "path",
             "required": true,
             "type": "string"
@@ -167,24 +161,23 @@
           }
         ],
         "tags": [
-          "proto.books.v1.BookService"
+          "proto.authors.v1.AuthorService"
         ]
       },
       "put": {
-        "summary": "Update an existing book",
+        "summary": "Update an existing author",
         "operationId": "Update",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/proto.books.v1.UpdateBookResponse"
+              "$ref": "#/definitions/proto.authors.v1.UpdateAuthorResponse"
             }
           }
         },
         "parameters": [
           {
             "name": "id",
-            "description": "ID of the book to update",
             "in": "path",
             "required": true,
             "type": "string"
@@ -194,7 +187,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/proto.books.v1.BookService.UpdateBody"
+              "$ref": "#/definitions/proto.authors.v1.AuthorService.UpdateBody"
             }
           },
           {
@@ -206,141 +199,133 @@
           }
         ],
         "tags": [
-          "proto.books.v1.BookService"
+          "proto.authors.v1.AuthorService"
         ]
       }
     }
   },
   "definitions": {
-    "proto.books.v1.Book": {
+    "proto.authors.v1.Author": {
       "type": "object",
       "properties": {
         "id": {
           "type": "string",
-          "title": "Book ID"
+          "title": "Author ID"
         },
-        "title": {
+        "name": {
           "type": "string",
-          "title": "Title of the book"
+          "title": "Name of the author"
         },
-        "isbn": {
+        "birthdate": {
           "type": "string",
-          "title": "ISBN of the book"
-        },
-        "authorId": {
-          "type": "string",
-          "title": "ID of the author"
+          "format": "date-time",
+          "title": "Birthdate of the author"
         }
       },
-      "title": "Message representing a book entity"
+      "title": "Message representing an author entity"
     },
-    "proto.books.v1.BookService.UpdateBody": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "isbn": {
-          "type": "string"
-        },
-        "authorId": {
-          "type": "string"
-        }
-      },
-      "description": "Details for updating an existing book",
-      "title": "Update an existing book",
-      "required": [
-        "title",
-        "isbn",
-        "authorId"
-      ]
-    },
-    "proto.books.v1.CreateBookRequest": {
+    "proto.authors.v1.AuthorService.UpdateBody": {
       "type": "object",
       "example": {
-        "title": "The Great Gatsby",
-        "isbn": "978-3-16-148410-0",
-        "author_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        "id": "123e4567-e89b-12d3-a456-426614174000",
+        "name": "F. Scott Fitzgerald",
+        "birthdate": "1896-09-24"
       },
       "properties": {
-        "title": {
+        "name": {
           "type": "string"
         },
-        "isbn": {
-          "type": "string"
-        },
-        "authorId": {
+        "birthdate": {
           "type": "string"
         }
       },
-      "description": "Details for creating a new book",
-      "title": "Create a new book",
+      "description": "Details for updating an existing author",
+      "title": "Update an existing author",
       "required": [
-        "title",
-        "isbn",
-        "authorId"
+        "name",
+        "birthdate"
       ]
     },
-    "proto.books.v1.CreateBookResponse": {
+    "proto.authors.v1.CreateAuthorRequest": {
+      "type": "object",
+      "example": {
+        "name": "Ernest Hemingway",
+        "birthdate": "1899-07-21"
+      },
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "birthdate": {
+          "type": "string"
+        }
+      },
+      "description": "Details for creating a new author",
+      "title": "Create a new author",
+      "required": [
+        "name",
+        "birthdate"
+      ]
+    },
+    "proto.authors.v1.CreateAuthorResponse": {
       "type": "object",
       "properties": {
-        "book": {
-          "$ref": "#/definitions/proto.books.v1.Book"
+        "author": {
+          "$ref": "#/definitions/proto.authors.v1.Author"
         },
         "response": {
-          "$ref": "#/definitions/proto.books.v1.MutationResponse"
+          "$ref": "#/definitions/proto.authors.v1.MutationResponse"
         }
       },
-      "title": "Response message for successful book creation"
+      "title": "Response message for successful author creation"
     },
-    "proto.books.v1.DeleteBookResponse": {
+    "proto.authors.v1.DeleteAuthorResponse": {
       "type": "object",
       "properties": {
         "response": {
-          "$ref": "#/definitions/proto.books.v1.MutationResponse"
+          "$ref": "#/definitions/proto.authors.v1.MutationResponse"
         }
       },
-      "title": "Response message for successful book deletion"
+      "title": "Response message for successful author deletion"
     },
-    "proto.books.v1.GetAllBookResponse": {
+    "proto.authors.v1.GetAllAuthorResponse": {
       "type": "object",
       "properties": {
         "pagination": {
-          "$ref": "#/definitions/proto.books.v1.PaginationResponse"
+          "$ref": "#/definitions/proto.authors.v1.PaginationResponse"
         },
-        "books": {
+        "authors": {
           "type": "array",
           "items": {
             "type": "object",
-            "$ref": "#/definitions/proto.books.v1.Book"
+            "$ref": "#/definitions/proto.authors.v1.Author"
           }
         },
         "response": {
-          "$ref": "#/definitions/proto.books.v1.MutationResponse"
+          "$ref": "#/definitions/proto.authors.v1.MutationResponse"
         }
       },
-      "title": "Response message for retrieving a paginated list of books"
+      "title": "Response message for retrieving a paginated list of authors"
     },
-    "proto.books.v1.GetBookByIDResponse": {
+    "proto.authors.v1.GetAuthorByIDResponse": {
       "type": "object",
       "properties": {
-        "book": {
-          "$ref": "#/definitions/proto.books.v1.Book"
+        "author": {
+          "$ref": "#/definitions/proto.authors.v1.Author"
         }
       },
-      "title": "Response message for retrieving a specific book by ID"
+      "title": "Response message for retrieving a specific author by ID"
     },
-    "proto.books.v1.MutationResponse": {
+    "proto.authors.v1.MutationResponse": {
       "type": "object",
       "properties": {
         "message": {
-          "type": "string",
-          "title": "Success or error message"
+          "type": "string"
         }
       },
       "title": "Mutation response for tracking success messages on operations"
     },
-    "proto.books.v1.PaginationResponse": {
+    "proto.authors.v1.PaginationResponse": {
       "type": "object",
       "properties": {
         "page": {
@@ -362,17 +347,17 @@
       },
       "title": "Pagination response for paginated requests"
     },
-    "proto.books.v1.UpdateBookResponse": {
+    "proto.authors.v1.UpdateAuthorResponse": {
       "type": "object",
       "properties": {
-        "book": {
-          "$ref": "#/definitions/proto.books.v1.Book"
+        "author": {
+          "$ref": "#/definitions/proto.authors.v1.Author"
         },
         "response": {
-          "$ref": "#/definitions/proto.books.v1.MutationResponse"
+          "$ref": "#/definitions/proto.authors.v1.MutationResponse"
         }
       },
-      "title": "Response message for successful book update"
+      "title": "Response message for successful author update"
     }
   }
 }

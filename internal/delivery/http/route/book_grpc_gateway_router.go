@@ -8,16 +8,16 @@ import (
 	"log/slog"
 )
 
-func (h *Router) GRPCBookSetup() *runtime.ServeMux {
-	grpcServer, netListener := server.NewGRPCServer("50052")
+func (h *Router) GRPCBookHTTPSetup(port string) *runtime.ServeMux {
+	grpcServer, netListener := server.NewGRPCServer(port)
 	grpcGatewayMux := runtime.NewServeMux()
 
 	books.RegisterBookServiceServer(grpcServer, h.BookHandler)
 
-	grpcClient := server.NewGRPCClient(grpcServer, netListener, "50052")
+	grpcClient := server.NewGRPCGatewayClient(grpcServer, netListener, port)
 
 	if err := books.RegisterBookServiceHandler(context.Background(), grpcGatewayMux, grpcClient); err != nil {
-		slog.Error("failed to register users gateway")
+		slog.Error("failed to register books gateway")
 	}
 
 	return grpcGatewayMux

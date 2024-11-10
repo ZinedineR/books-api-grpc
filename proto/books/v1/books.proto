@@ -12,7 +12,7 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
     version: "v1",
     description: "Service to handle book management"
   },
-  host: "localhost:8081",
+  host: "localhost:8082",
 };
 
 service BookService {

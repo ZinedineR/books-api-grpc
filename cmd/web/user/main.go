@@ -73,7 +73,7 @@ func main() {
 		UserHandler:    grpc.NewUserGRPCHandler(userService),
 		AuthMiddleware: api.NewAuthMiddleware(signaturer),
 	}
-	router.UserSetup()
+	router.UserSetup(conf.AppEnvConfig.UserGRPCPort)
 	router.SwaggerRouter()
 	echan := make(chan error)
 	go func() {

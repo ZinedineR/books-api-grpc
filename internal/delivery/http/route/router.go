@@ -9,26 +9,36 @@ import (
 type Router struct {
 	App            *gin.Engine
 	UserHandler    *grpc.UserGRPCHandler
+	AuthorHandler  *grpc.AuthorGRPCHandler
 	BookHandler    *grpc.BookGRPCHandler
 	AuthMiddleware *api.AuthMiddleware
 }
 
-func (h *Router) UserSetup() {
+func (h *Router) UserSetup(port string) {
 	h.App.Use(h.AuthMiddleware.ErrorHandler)
 	guestApi := h.App.Group("/api/v1/auth")
 	{
-		userGRPC := h.GRPCUserSetup()
+		userGRPC := h.GRPCUserHTTPSetup(port)
 		guestApi.Any("/*grpc_gateway", gin.WrapH(userGRPC))
 	}
 }
 
-func (h *Router) BookSetup() {
+func (h *Router) BookSetup(port string) {
 	h.App.Use(h.AuthMiddleware.ErrorHandler)
 	bookApi := h.App.Group("/api/v1")
 	bookApi.Use(h.AuthMiddleware.JWTAuthentication)
 	{
-		bookGRPC := h.GRPCBookSetup()
+		bookGRPC := h.GRPCBookHTTPSetup(port)
 		bookApi.Any("/*grpc_gateway", gin.WrapH(bookGRPC))
 	}
+}
 
+func (h *Router) AuthorSetup(port string) {
+	//h.App.Use(h.AuthMiddleware.ErrorHandler)
+	authorApi := h.App.Group("/api/v1")
+	authorApi.Use(h.AuthMiddleware.ErrorHandler, h.AuthMiddleware.JWTAuthentication)
+	{
+		authorGRPC := h.GRPCAuthorHTTPSetup(port)
+		authorApi.Any("/*grpc_gateway", gin.WrapH(authorGRPC))
+	}
 }

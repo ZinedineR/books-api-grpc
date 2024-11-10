@@ -105,6 +105,9 @@ func (s *AuthorServiceImpl) Detail(ctx context.Context, req *model.GetAuthorByID
 	if err != nil {
 		return nil, exception.Internal("err", err)
 	}
+	if result == nil {
+		return nil, exception.NotFound("author not found, id: " + req.ID)
+	}
 	return &model.GetAuthorByIDRes{
 		Author: *result,
 	}, nil

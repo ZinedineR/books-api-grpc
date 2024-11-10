@@ -1,6 +1,7 @@
 package service
 
 import (
+	"books-api/internal/gateway/externalapi"
 	"books-api/internal/model"
 	"books-api/internal/repository"
 	"context"
@@ -11,19 +12,22 @@ import (
 )
 
 type BookServiceImpl struct {
-	db       *gorm.DB
-	bookRepo repository.BookRepository
-	validate *xvalidator.Validator
+	db            *gorm.DB
+	bookRepo      repository.BookRepository
+	authorService externalapi.AuthorSvcExternal
+	validate      *xvalidator.Validator
 }
 
 func NewBookService(
 	db *gorm.DB, repo repository.BookRepository,
+	authorService externalapi.AuthorSvcExternal,
 	validate *xvalidator.Validator,
 ) BookService {
 	return &BookServiceImpl{
-		db:       db,
-		bookRepo: repo,
-		validate: validate,
+		db:            db,
+		bookRepo:      repo,
+		authorService: authorService,
+		validate:      validate,
 	}
 }
 
@@ -36,6 +40,13 @@ func (s *BookServiceImpl) Create(
 		return nil, exception.InvalidArgument(errs)
 	}
 	body := req.ToEntity()
+	authorCheck, err := s.authorService.GetById(req.AuthorId)
+	if err != nil {
+		return nil, exception.Internal(err.Error(), err)
+	}
+	if authorCheck == nil {
+		return nil, exception.NotFound("author not found, id: " + req.AuthorId)
+	}
 	if err := s.bookRepo.CreateTx(ctx, tx, body); err != nil {
 		return nil, exception.Internal(err.Error(), err)
 	}
@@ -58,6 +69,13 @@ func (s *BookServiceImpl) Update(
 	}
 	body := req.ToEntity()
 	body.Id = req.ID
+	authorCheck, err := s.authorService.GetById(req.AuthorId)
+	if err != nil {
+		return nil, exception.Internal(err.Error(), err)
+	}
+	if authorCheck == nil {
+		return nil, exception.NotFound("author not found, id: " + req.AuthorId)
+	}
 	if err := s.bookRepo.UpdateTx(ctx, tx, body); err != nil {
 		return nil, exception.Internal(err.Error(), err)
 	}

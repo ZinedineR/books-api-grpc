@@ -8,13 +8,13 @@ import (
 	"log/slog"
 )
 
-func (h *Router) GRPCUserSetup() *runtime.ServeMux {
-	grpcServer, netListener := server.NewGRPCServer("50051")
+func (h *Router) GRPCUserHTTPSetup(port string) *runtime.ServeMux {
+	grpcServer, netListener := server.NewGRPCServer(port)
 	grpcGatewayMux := runtime.NewServeMux()
 
 	users.RegisterUserServiceServer(grpcServer, h.UserHandler)
 
-	grpcClient := server.NewGRPCClient(grpcServer, netListener, "50051")
+	grpcClient := server.NewGRPCGatewayClient(grpcServer, netListener, port)
 
 	if err := users.RegisterUserServiceHandler(context.Background(), grpcGatewayMux, grpcClient); err != nil {
 		slog.Error("failed to register users gateway")
