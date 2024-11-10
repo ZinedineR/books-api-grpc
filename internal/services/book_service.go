@@ -37,7 +37,7 @@ func (s *BookServiceImpl) Create(
 	}
 	body := req.ToEntity()
 	if err := s.bookRepo.CreateTx(ctx, tx, body); err != nil {
-		return nil, exception.Internal("err", err)
+		return nil, exception.Internal(err.Error(), err)
 	}
 
 	if err := tx.Commit().Error; err != nil {
@@ -59,7 +59,7 @@ func (s *BookServiceImpl) Update(
 	body := req.ToEntity()
 	body.Id = req.ID
 	if err := s.bookRepo.UpdateTx(ctx, tx, body); err != nil {
-		return nil, exception.Internal("err", err)
+		return nil, exception.Internal(err.Error(), err)
 	}
 	if err := tx.Commit().Error; err != nil {
 		return nil, exception.Internal("commit transaction", err)
@@ -76,7 +76,7 @@ func (s *BookServiceImpl) Delete(ctx context.Context, req *model.DeleteBookReq) 
 	defer tx.Rollback()
 
 	if err := s.bookRepo.DeleteByIDTx(ctx, tx, req.ID); err != nil {
-		return nil, exception.Internal("err", err)
+		return nil, exception.Internal(err.Error(), err)
 	}
 	if err := tx.Commit().Error; err != nil {
 		return nil, exception.Internal("commit transaction", err)
@@ -103,7 +103,7 @@ func (s *BookServiceImpl) Detail(ctx context.Context, req *model.GetBookByIDReq)
 ) {
 	result, err := s.bookRepo.FindByID(ctx, s.db, req.ID)
 	if err != nil {
-		return nil, exception.Internal("err", err)
+		return nil, exception.Internal(err.Error(), err)
 	}
 	return &model.GetBookByIDRes{
 		Book: *result,

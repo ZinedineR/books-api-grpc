@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"books-api/internal/model"
+	"books-api/pkg/utils/converter"
 	"fmt"
 	"google.golang.org/protobuf/types/known/timestamppb"
 	"regexp"
@@ -74,7 +75,7 @@ func GetFilterOperator(operator string) (string, error) {
 func (h *GRPCParamHandler) ParsePageLimitParam(page, pageSize string) (model.PaginationParam, error) {
 	var p model.PaginationParam
 	var err error
-	if page == "" {
+	if page == "" || page == "0" {
 		p.Page = 1
 	} else {
 		p.Page, err = strconv.Atoi(page)
@@ -82,8 +83,8 @@ func (h *GRPCParamHandler) ParsePageLimitParam(page, pageSize string) (model.Pag
 			return model.PaginationParam{}, err
 		}
 	}
-	if pageSize == "" {
-		p.PageSize = 10
+	if pageSize == "" || pageSize == "0" {
+		p.PageSize = -1
 	} else {
 		p.PageSize, err = strconv.Atoi(pageSize)
 		if err != nil {
@@ -144,10 +145,10 @@ func (h *GRPCParamHandler) ParseFilterParams(f string) (model.FilterParams, erro
 	return p, nil
 }
 
-func (h *GRPCParamHandler) ParseFindParams(page, pageSize, order, filter string) (
+func (h *GRPCParamHandler) ParseFindParams(page, pageSize int32, order, filter string) (
 	model.PaginationParam, model.OrderParam, model.FilterParams, error,
 ) {
-	pagination, err := h.ParsePageLimitParam(page, pageSize)
+	pagination, err := h.ParsePageLimitParam(converter.ToString(page), converter.ToString(pageSize))
 	if err != nil {
 		return model.PaginationParam{}, model.OrderParam{}, model.FilterParams{}, err
 	}

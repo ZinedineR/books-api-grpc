@@ -1,0 +1,378 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Book Service",
+    "description": "Service to handle book management",
+    "version": "v1"
+  },
+  "tags": [
+    {
+      "name": "proto.books.v1.BookService"
+    }
+  ],
+  "host": "localhost:8081",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/books": {
+      "get": {
+        "summary": "Retrieve all books with pagination",
+        "operationId": "Find",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.books.v1.GetAllBookResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "Page number for pagination",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "Page size for pagination",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "filter",
+            "description": "Filter criteria",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "description": "Sort order",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "JWT Token: use Bearer \u003cjwt\u003e",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.books.v1.BookService"
+        ]
+      },
+      "post": {
+        "summary": "Create a new book",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.books.v1.CreateBookResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": "Details for creating a new book",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.books.v1.CreateBookRequest"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "JWT Token: use Bearer \u003cjwt\u003e",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.books.v1.BookService"
+        ]
+      }
+    },
+    "/api/v1/books/{id}": {
+      "get": {
+        "summary": "Retrieve a specific book by ID",
+        "operationId": "Detail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.books.v1.GetBookByIDResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID of the book to retrieve",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "JWT Token: use Bearer \u003cjwt\u003e",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.books.v1.BookService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a book by ID",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.books.v1.DeleteBookResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID of the book to delete",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "Authorization",
+            "description": "JWT Token: use Bearer \u003cjwt\u003e",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.books.v1.BookService"
+        ]
+      },
+      "put": {
+        "summary": "Update an existing book",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.books.v1.UpdateBookResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID of the book to update",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.books.v1.BookService.UpdateBody"
+            }
+          },
+          {
+            "name": "Authorization",
+            "description": "JWT Token: use Bearer \u003cjwt\u003e",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.books.v1.BookService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "proto.books.v1.Book": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Book ID"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title of the book"
+        },
+        "isbn": {
+          "type": "string",
+          "title": "ISBN of the book"
+        },
+        "authorId": {
+          "type": "string",
+          "title": "ID of the author"
+        }
+      },
+      "title": "Message representing a book entity"
+    },
+    "proto.books.v1.BookService.UpdateBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "isbn": {
+          "type": "string"
+        },
+        "authorId": {
+          "type": "string"
+        }
+      },
+      "description": "Details for updating an existing book",
+      "title": "Update an existing book",
+      "required": [
+        "title",
+        "isbn",
+        "authorId"
+      ]
+    },
+    "proto.books.v1.CreateBookRequest": {
+      "type": "object",
+      "example": {
+        "title": "The Great Gatsby",
+        "isbn": "978-3-16-148410-0",
+        "author_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+      },
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "isbn": {
+          "type": "string"
+        },
+        "authorId": {
+          "type": "string"
+        }
+      },
+      "description": "Details for creating a new book",
+      "title": "Create a new book",
+      "required": [
+        "title",
+        "isbn",
+        "authorId"
+      ]
+    },
+    "proto.books.v1.CreateBookResponse": {
+      "type": "object",
+      "properties": {
+        "book": {
+          "$ref": "#/definitions/proto.books.v1.Book"
+        },
+        "response": {
+          "$ref": "#/definitions/proto.books.v1.MutationResponse"
+        }
+      },
+      "title": "Response message for successful book creation"
+    },
+    "proto.books.v1.DeleteBookResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "$ref": "#/definitions/proto.books.v1.MutationResponse"
+        }
+      },
+      "title": "Response message for successful book deletion"
+    },
+    "proto.books.v1.GetAllBookResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/proto.books.v1.PaginationResponse"
+        },
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/proto.books.v1.Book"
+          }
+        },
+        "response": {
+          "$ref": "#/definitions/proto.books.v1.MutationResponse"
+        }
+      },
+      "title": "Response message for retrieving a paginated list of books"
+    },
+    "proto.books.v1.GetBookByIDResponse": {
+      "type": "object",
+      "properties": {
+        "book": {
+          "$ref": "#/definitions/proto.books.v1.Book"
+        }
+      },
+      "title": "Response message for retrieving a specific book by ID"
+    },
+    "proto.books.v1.MutationResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "title": "Success or error message"
+        }
+      },
+      "title": "Mutation response for tracking success messages on operations"
+    },
+    "proto.books.v1.PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPages": {
+          "type": "string",
+          "format": "int64"
+        },
+        "totalRows": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "Pagination response for paginated requests"
+    },
+    "proto.books.v1.UpdateBookResponse": {
+      "type": "object",
+      "properties": {
+        "book": {
+          "$ref": "#/definitions/proto.books.v1.Book"
+        },
+        "response": {
+          "$ref": "#/definitions/proto.books.v1.MutationResponse"
+        }
+      },
+      "title": "Response message for successful book update"
+    }
+  }
+}

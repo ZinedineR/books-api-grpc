@@ -4,8 +4,6 @@ import (
 	"books-api/internal/model"
 	"books-api/internal/services"
 	"books-api/proto/users/v1"
-
-	//wallet_finance "books-api/proto/wallet-finance/v1"
 	"context"
 	"fmt"
 	"google.golang.org/grpc/codes"

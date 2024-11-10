@@ -12,7 +12,7 @@ func (h *Router) GRPCUserSetup() *runtime.ServeMux {
 	grpcServer, netListener := server.NewGRPCServer("50051")
 	grpcGatewayMux := runtime.NewServeMux()
 
-	users.RegisterUserServiceServer(grpcServer, h.GRPCHandler.User)
+	users.RegisterUserServiceServer(grpcServer, h.UserHandler)
 
 	grpcClient := server.NewGRPCClient(grpcServer, netListener, "50051")
 

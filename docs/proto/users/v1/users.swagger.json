@@ -56,10 +56,6 @@
             "schema": {
               "$ref": "#/definitions/proto.users.v1.RegisterResponse"
             }
-          },
-          "400": {
-            "description": "Bad Request",
-            "schema": {}
           }
         },
         "parameters": [

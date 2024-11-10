@@ -17,12 +17,12 @@ import (
 )
 
 func setupSQLMock(t *testing.T) (sqlmock.Sqlmock, *gorm.DB) {
-	// Setup SQL mock
+	// UserSetup SQL mock
 	db, mockSql, err := sqlmock.New()
 	if err != nil {
 		t.Fatalf("an error '%s' was not expected when opening a stub database connection", err)
 	}
-	// Setup GORM with the mock DB
+	// UserSetup GORM with the mock DB
 	gormDB, gormDBErr := gorm.Open(postgres.New(postgres.Config{
 		Conn: db,
 	}), &gorm.Config{

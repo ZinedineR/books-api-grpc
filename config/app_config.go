@@ -9,7 +9,8 @@ type AppConfig struct {
 	AppDebug     bool
 	AppVersion   string   `validate:"required,startswith=v,alphanum" name:"APP_VERSION"`
 	AppName      string   `validate:"required" name:"APP_NAME"`
-	HttpPort     string   `validate:"required,number" name:"HTTP_PORT"`
+	UserHttpPort string   `validate:"number" name:"USER_HTTP_PORT"`
+	BookHttpPort string   `validate:"number" name:"BOOK_HTTP_PORT"`
 	AllowOrigins []string `name:"HTTP_ALLOW_ORIGINS"`
 	AllowMethods []string `name:"HTTP_ALLOW_METHODS"`
 	AllowHeaders []string `name:"HTTP_ALLOW_HEADERS"`
@@ -22,7 +23,8 @@ func AppConfigInit() *AppConfig {
 		AppDebug:     viper.GetBool("APP_DEBUG"),
 		AppVersion:   viper.GetString("APP_VERSION"),
 		AppName:      viper.GetString("APP_NAME"),
-		HttpPort:     viper.GetString("HTTP_PORT"),
+		UserHttpPort: viper.GetString("USER_HTTP_PORT"),
+		BookHttpPort: viper.GetString("BOOK_HTTP_PORT"),
 		LogFilePath:  viper.GetString("LOG_PATH"),
 		AllowOrigins: viper.GetStringSlice("ALLOW_ORIGINS"),
 		AllowMethods: viper.GetStringSlice("ALLOW_METHODS"),

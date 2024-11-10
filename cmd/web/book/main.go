@@ -5,11 +5,10 @@ import (
 	"books-api/internal/delivery/grpc"
 	api "books-api/internal/delivery/http/middleware"
 	"books-api/internal/delivery/http/route"
+	"books-api/internal/entity"
 	"books-api/internal/repository"
 	services "books-api/internal/services"
-	"books-api/migration"
 	"books-api/pkg/database"
-	"books-api/pkg/httpclient"
 	"books-api/pkg/logger"
 	"books-api/pkg/server"
 	"books-api/pkg/signature"
@@ -52,7 +51,7 @@ func main() {
 	})
 	initInfrastructure(conf)
 	ginServer := server.NewGinServer(&server.GinConfig{
-		HttpPort:     conf.AppEnvConfig.HttpPort,
+		HttpPort:     conf.AppEnvConfig.BookHttpPort,
 		AllowOrigins: conf.AppEnvConfig.AllowOrigins,
 		AllowMethods: conf.AppEnvConfig.AllowMethods,
 		AllowHeaders: conf.AppEnvConfig.AllowHeaders,
@@ -60,24 +59,21 @@ func main() {
 	// external
 	signaturer := signature.NewSignature(conf.AuthConfig.JwtSecretAccessToken)
 	// repository
-	//booksRepository := repository.NewBookSQLRepository()
+	booksRepository := repository.NewBookSQLRepository()
 	//authorRepository := repository.NewAuthorSQLRepository()
-	userRepository := repository.NewUserSQLRepository()
+	//userRepository := repository.NewUserSQLRepository()
 
 	// service
-	//booksService := services.NewBookService(sqlClientRepo.GetDB(), booksRepository, validate)
+	booksService := services.NewBookService(sqlClientRepo.GetDB(), booksRepository, validate)
 	//authorService := services.NewAuthorService(sqlClientRepo.GetDB(), authorRepository, validate)
-	userService := services.NewUserService(sqlClientRepo.GetDB(), userRepository, signaturer, validate)
-	// Handler
-	GRPCHandler := grpc.NewUserGRPCHandler(userService)
+	//userService := services.NewUserService(sqlClientRepo.GetDB(), userRepository, signaturer, validate)
 
 	router := route.Router{
 		App:            ginServer.App,
-		GRPCHandler:    grpc.NewBaseGRPCHandler(GRPCHandler),
+		BookHandler:    grpc.NewBookGRPCHandler(booksService),
 		AuthMiddleware: api.NewAuthMiddleware(signaturer),
 	}
-	router.Setup()
-	router.SwaggerRouter()
+	router.BookSetup()
 	echan := make(chan error)
 	go func() {
 		echan <- ginServer.Start()
@@ -104,18 +100,12 @@ func initSQL(conf *config.Config) *database.Database {
 		DbHost:   conf.DatabaseConfig.Dbhost,
 		DbUser:   conf.DatabaseConfig.Dbuser,
 		DbPass:   conf.DatabaseConfig.Dbpassword,
-		DbName:   conf.DatabaseConfig.Dbname,
+		DbName:   conf.DatabaseConfig.BookDbname,
 		DbPort:   strconv.Itoa(conf.DatabaseConfig.Dbport),
 		DbPrefix: conf.DatabaseConfig.DbPrefix,
 	})
 	if conf.IsStaging() {
-		migration.AutoMigration(db)
+		db.MigrateDB(&entity.Book{})
 	}
 	return db
-}
-
-func initHttpclient() httpclient.Client {
-	httpClientFactory := httpclient.New()
-	httpClient := httpClientFactory.CreateClient()
-	return httpClient
 }
