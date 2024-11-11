@@ -24,23 +24,6 @@ var (
 	sqlClientRepo *database.Database
 )
 
-// @title           Books-API
-// @version         1.0
-// @description     This is a sample server celler server.
-// @termsOfService  http://swagger.io/terms/
-
-// @contact.name   API Support
-// @contact.url    http://www.swagger.io/support
-// @contact.email  support@swagger.io
-
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host      localhost:9004
-// @BasePath  /
-
-// @externalDocs.description  OpenAPI
-// @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	validate, _ := xvalidator.NewValidator()
 	conf := config.InitAppConfig(validate)
@@ -59,13 +42,9 @@ func main() {
 	// external
 	signaturer := signature.NewSignature(conf.AuthConfig.JwtSecretAccessToken)
 	// repository
-	//booksRepository := repository.NewBookSQLRepository()
-	//authorRepository := repository.NewAuthorSQLRepository()
 	userRepository := repository.NewUserSQLRepository()
 
 	// service
-	//booksService := services.NewBookService(sqlClientRepo.GetDB(), booksRepository, validate)
-	//authorService := services.NewAuthorService(sqlClientRepo.GetDB(), authorRepository, validate)
 	userService := services.NewUserService(sqlClientRepo.GetDB(), userRepository, signaturer, validate)
 
 	router := route.Router{

@@ -1,0 +1,330 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Category Service",
+    "description": "Service to handle category management",
+    "version": "v1"
+  },
+  "tags": [
+    {
+      "name": "proto.categories.v1.CategoryService"
+    }
+  ],
+  "host": "localhost:8083",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/categories": {
+      "get": {
+        "summary": "Retrieve all categories with pagination",
+        "operationId": "Find",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.categories.v1.GetAllCategoryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.categories.v1.CategoryService"
+        ]
+      },
+      "post": {
+        "summary": "Create a new category",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.categories.v1.CreateCategoryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.categories.v1.CreateCategoryRequest"
+            }
+          }
+        ],
+        "tags": [
+          "proto.categories.v1.CategoryService"
+        ]
+      }
+    },
+    "/api/v1/categories/{id}": {
+      "get": {
+        "summary": "Retrieve a specific category by ID",
+        "operationId": "Detail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.categories.v1.GetCategoryByIDResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.categories.v1.CategoryService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete a category by ID",
+        "operationId": "Delete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.categories.v1.DeleteCategoryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.categories.v1.CategoryService"
+        ]
+      },
+      "put": {
+        "summary": "Update an existing category",
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.categories.v1.UpdateCategoryResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.categories.v1.CategoryService.UpdateBody"
+            }
+          }
+        ],
+        "tags": [
+          "proto.categories.v1.CategoryService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "proto.books.v1.Book": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Book ID"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title of the book"
+        },
+        "isbn": {
+          "type": "string",
+          "title": "ISBN of the book"
+        },
+        "authorId": {
+          "type": "string",
+          "title": "ID of the author"
+        },
+        "categoryId": {
+          "type": "string",
+          "title": "ID of Category"
+        }
+      },
+      "title": "Message representing a book entity"
+    },
+    "proto.categories.v1.Category": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Category ID"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title of the category"
+        }
+      },
+      "title": "Message representing a category entity"
+    },
+    "proto.categories.v1.CategoryService.UpdateBody": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "Request message for updating a category"
+    },
+    "proto.categories.v1.CreateCategoryRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      },
+      "title": "Request message for creating a new category"
+    },
+    "proto.categories.v1.CreateCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "$ref": "#/definitions/proto.categories.v1.Category"
+        },
+        "response": {
+          "$ref": "#/definitions/proto.categories.v1.MutationResponse"
+        }
+      },
+      "title": "Response message for successful category creation"
+    },
+    "proto.categories.v1.DeleteCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "response": {
+          "$ref": "#/definitions/proto.categories.v1.MutationResponse"
+        }
+      },
+      "title": "Response message for successful category deletion"
+    },
+    "proto.categories.v1.GetAllCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/proto.categories.v1.PaginationResponse"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/proto.categories.v1.Category"
+          }
+        },
+        "response": {
+          "$ref": "#/definitions/proto.categories.v1.MutationResponse"
+        }
+      },
+      "title": "Response message for retrieving a paginated list of categories"
+    },
+    "proto.categories.v1.GetCategoryByIDResponse": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "$ref": "#/definitions/proto.categories.v1.Category"
+        },
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/proto.books.v1.Book"
+          }
+        }
+      },
+      "title": "Response message for retrieving a specific category by ID"
+    },
+    "proto.categories.v1.MutationResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      },
+      "title": "Mutation response for tracking success messages on operations"
+    },
+    "proto.categories.v1.PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPages": {
+          "type": "string",
+          "format": "int64"
+        },
+        "totalRows": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "Pagination response for paginated requests"
+    },
+    "proto.categories.v1.UpdateCategoryResponse": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "$ref": "#/definitions/proto.categories.v1.Category"
+        },
+        "response": {
+          "$ref": "#/definitions/proto.categories.v1.MutationResponse"
+        }
+      },
+      "title": "Response message for successful category update"
+    }
+  }
+}

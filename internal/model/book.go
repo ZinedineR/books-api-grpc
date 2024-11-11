@@ -7,9 +7,10 @@ import (
 )
 
 type BaseBookReq struct {
-	Title    string `json:"title" validate:"required,gte=2" example:"The Great Gatsby"`
-	ISBN     string `json:"isbn" validate:"required,gte=2" example:"978-3-16-148410-0"`
-	AuthorId string `json:"author_id" validate:"required,uuid" example:"f47ac10b-58cc-4372-a567-0e02b2c3d479"`
+	Title      string `json:"title" validate:"required,gte=2" example:"The Great Gatsby"`
+	ISBN       string `json:"isbn" validate:"required,gte=2" example:"978-3-16-148410-0"`
+	AuthorId   string `json:"author_id" validate:"required,uuid" example:"f47ac10b-58cc-4372-a567-0e02b2c3d479"`
+	CategoryId string `json:"category_id" validate:"required,uuid" example:"7ea2b005-a3a5-4f4b-b762-75234fb6b4bd"`
 }
 
 type CreateBookReq struct {
@@ -18,10 +19,11 @@ type CreateBookReq struct {
 
 func (req BaseBookReq) ToEntity() *entity.Book {
 	return &entity.Book{
-		Id:       uuid.NewString(),
-		Title:    req.Title,
-		ISBN:     req.ISBN,
-		AuthorId: req.AuthorId,
+		Id:         uuid.NewString(),
+		Title:      req.Title,
+		ISBN:       req.ISBN,
+		AuthorId:   req.AuthorId,
+		CategoryId: req.CategoryId,
 	}
 }
 
@@ -63,10 +65,11 @@ type GetBookByIDRes struct {
 
 func BookGRPCToEntity(input *books.Book) *entity.Book {
 	return &entity.Book{
-		Id:       input.Id,
-		Title:    input.Title,
-		ISBN:     input.Isbn,
-		AuthorId: input.AuthorId,
+		Id:         input.Id,
+		Title:      input.Title,
+		ISBN:       input.Isbn,
+		AuthorId:   input.AuthorId,
+		CategoryId: input.CategoryId,
 	}
 }
 

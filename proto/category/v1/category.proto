@@ -1,0 +1,136 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+import "proto/books/v1/books.proto"; // Import books proto to handle the list of books for each category
+
+option go_package = "books-api/proto/categories/v1;categories";
+
+package proto.categories.v1;
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Category Service",
+    version: "v1",
+    description: "Service to handle category management"
+  },
+  host: "localhost:8083",
+};
+
+// Service definition for Category Service
+service CategoryService {
+  // Create a new category
+  rpc Create (CreateCategoryRequest) returns (CreateCategoryResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/categories"
+      body: "*"
+    };
+  };
+
+  // Update an existing category
+  rpc Update (UpdateCategoryRequest) returns (UpdateCategoryResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/categories/{id}"
+      body: "*"
+    };
+  };
+
+  // Retrieve all categories with pagination
+  rpc Find (GetAllCategoryRequest) returns (GetAllCategoryResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/categories"
+    };
+  };
+
+  // Retrieve a specific category by ID
+  rpc Detail (GetCategoryByIDRequest) returns (GetCategoryByIDResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/categories/{id}"
+    };
+  };
+
+  // Delete a category by ID
+  rpc Delete (DeleteCategoryRequest) returns (DeleteCategoryResponse) {
+    option (google.api.http) = {
+      delete: "/api/v1/categories/{id}"
+    };
+  };
+}
+
+// Message representing a category entity
+message Category {
+  string id = 1;                     // Category ID
+  string title = 2;                  // Title of the category
+}
+
+// Request message for creating a new category
+message CreateCategoryRequest {
+  string title = 1;
+}
+
+// Response message for successful category creation
+message CreateCategoryResponse {
+  Category category = 1;
+  MutationResponse response = 2;
+}
+
+// Request message for updating a category
+message UpdateCategoryRequest {
+  string id = 1;
+  string title = 2;
+}
+
+// Response message for successful category update
+message UpdateCategoryResponse {
+  Category category = 1;
+  MutationResponse response = 2;
+}
+
+// Request message for retrieving a paginated list of categories
+message GetAllCategoryRequest {
+  int32 page = 1;
+  int32 page_size = 2;
+  string filter = 3;
+  string sort = 4;
+}
+
+// Response message for retrieving a paginated list of categories
+message GetAllCategoryResponse {
+  PaginationResponse pagination = 1;
+  repeated Category categories = 2;
+  MutationResponse response = 3;
+}
+
+// Request message for retrieving a category by ID
+message GetCategoryByIDRequest {
+  string id = 1;
+}
+
+// Response message for retrieving a specific category by ID
+message GetCategoryByIDResponse {
+  Category category = 1;
+  repeated proto.books.v1.Book books = 2;
+}
+
+// Request message for deleting a category by ID
+message DeleteCategoryRequest {
+  string id = 1;
+}
+
+// Response message for successful category deletion
+message DeleteCategoryResponse {
+  MutationResponse response = 1;
+}
+
+// Mutation response for tracking success messages on operations
+message MutationResponse {
+  string message = 1;
+}
+
+// Pagination response for paginated requests
+message PaginationResponse {
+  int32 page = 1;
+  int32 page_size = 2;
+  int64 total_pages = 3;
+  int64 total_rows = 4;
+}

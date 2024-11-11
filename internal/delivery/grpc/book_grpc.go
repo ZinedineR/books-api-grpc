@@ -24,9 +24,10 @@ func NewBookGRPCHandler(service service.BookService) *BookGRPCHandler {
 func (h *BookGRPCHandler) Create(ctx context.Context, req *books.CreateBookRequest) (*books.CreateBookResponse, error) {
 	book := &model.CreateBookReq{
 		BaseBookReq: model.BaseBookReq{
-			Title:    req.GetTitle(),
-			ISBN:     req.GetIsbn(),
-			AuthorId: req.GetAuthorId(),
+			Title:      req.GetTitle(),
+			ISBN:       req.GetIsbn(),
+			AuthorId:   req.GetAuthorId(),
+			CategoryId: req.GetCategoryId(),
 		},
 	}
 	response, err := h.BookService.Create(ctx, book)
@@ -35,10 +36,11 @@ func (h *BookGRPCHandler) Create(ctx context.Context, req *books.CreateBookReque
 	}
 	return &books.CreateBookResponse{
 		Book: &books.Book{
-			Id:       response.Id,
-			Title:    response.Title,
-			Isbn:     response.ISBN,
-			AuthorId: response.AuthorId,
+			Id:         response.Id,
+			Title:      response.Title,
+			Isbn:       response.ISBN,
+			AuthorId:   response.AuthorId,
+			CategoryId: response.CategoryId,
 		},
 		Response: &books.MutationResponse{
 			Message: "Book created successfully",
@@ -50,9 +52,10 @@ func (h *BookGRPCHandler) Create(ctx context.Context, req *books.CreateBookReque
 func (h *BookGRPCHandler) Update(ctx context.Context, req *books.UpdateBookRequest) (*books.UpdateBookResponse, error) {
 	book := &model.UpdateBookReq{
 		BaseBookReq: model.BaseBookReq{
-			Title:    req.GetTitle(),
-			ISBN:     req.GetIsbn(),
-			AuthorId: req.GetAuthorId(),
+			Title:      req.GetTitle(),
+			ISBN:       req.GetIsbn(),
+			AuthorId:   req.GetAuthorId(),
+			CategoryId: req.GetCategoryId(),
 		},
 		ID: req.GetId(),
 	}
@@ -62,10 +65,11 @@ func (h *BookGRPCHandler) Update(ctx context.Context, req *books.UpdateBookReque
 	}
 	return &books.UpdateBookResponse{
 		Book: &books.Book{
-			Id:       response.Id,
-			Title:    response.Title,
-			Isbn:     response.ISBN,
-			AuthorId: response.AuthorId,
+			Id:         response.Id,
+			Title:      response.Title,
+			Isbn:       response.ISBN,
+			AuthorId:   response.AuthorId,
+			CategoryId: response.CategoryId,
 		},
 		Response: &books.MutationResponse{
 			Message: "Book updated successfully",
@@ -95,10 +99,11 @@ func (h *BookGRPCHandler) Find(ctx context.Context, req *books.GetAllBookRequest
 	booksData := make([]*books.Book, len(response.Data))
 	for i, book := range response.Data {
 		booksData[i] = &books.Book{
-			Id:       book.Id,
-			Title:    book.Title,
-			Isbn:     book.ISBN,
-			AuthorId: book.AuthorId,
+			Id:         book.Id,
+			Title:      book.Title,
+			Isbn:       book.ISBN,
+			AuthorId:   book.AuthorId,
+			CategoryId: book.CategoryId,
 		}
 	}
 	return &books.GetAllBookResponse{
@@ -125,10 +130,11 @@ func (h *BookGRPCHandler) Detail(ctx context.Context, req *books.GetBookByIDRequ
 	}
 	return &books.GetBookByIDResponse{
 		Book: &books.Book{
-			Id:       response.Id,
-			Title:    response.Title,
-			Isbn:     response.ISBN,
-			AuthorId: response.AuthorId,
+			Id:         response.Id,
+			Title:      response.Title,
+			Isbn:       response.ISBN,
+			AuthorId:   response.AuthorId,
+			CategoryId: response.CategoryId,
 		},
 	}, nil
 }

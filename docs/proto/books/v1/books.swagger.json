@@ -230,6 +230,10 @@
         "authorId": {
           "type": "string",
           "title": "ID of the author"
+        },
+        "categoryId": {
+          "type": "string",
+          "title": "ID of Category"
         }
       },
       "title": "Message representing a book entity"
@@ -245,6 +249,9 @@
         },
         "authorId": {
           "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
         }
       },
       "description": "Details for updating an existing book",
@@ -252,7 +259,8 @@
       "required": [
         "title",
         "isbn",
-        "authorId"
+        "authorId",
+        "categoryId"
       ]
     },
     "proto.books.v1.CreateBookRequest": {
@@ -260,7 +268,8 @@
       "example": {
         "title": "The Great Gatsby",
         "isbn": "978-3-16-148410-0",
-        "author_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        "author_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+        "category_id": "7ea2b005-a3a5-4f4b-b762-75234fb6b4bd"
       },
       "properties": {
         "title": {
@@ -271,6 +280,9 @@
         },
         "authorId": {
           "type": "string"
+        },
+        "categoryId": {
+          "type": "string"
         }
       },
       "description": "Details for creating a new book",
@@ -278,7 +290,8 @@
       "required": [
         "title",
         "isbn",
-        "authorId"
+        "authorId",
+        "categoryId"
       ]
     },
     "proto.books.v1.CreateBookResponse": {

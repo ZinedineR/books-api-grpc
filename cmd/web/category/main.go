@@ -35,27 +35,26 @@ func main() {
 	})
 	initInfrastructure(conf)
 	ginServer := server.NewGinServer(&server.GinConfig{
-		HttpPort:     conf.AppEnvConfig.BookHttpPort,
+		HttpPort:     conf.AppEnvConfig.CategoryHTTPPort,
 		AllowOrigins: conf.AppEnvConfig.AllowOrigins,
 		AllowMethods: conf.AppEnvConfig.AllowMethods,
 		AllowHeaders: conf.AppEnvConfig.AllowHeaders,
 	})
 	// external
 	signaturer := signature.NewSignature(conf.AuthConfig.JwtSecretAccessToken)
-	authorExternal := externalapi.NewAuthorExternalImpl(conf)
-	categoryExternal := externalapi.NewCategoryExternalImpl(conf)
+	bookClient := externalapi.NewBookExternalImpl(conf)
 	// repository
-	booksRepository := repository.NewBookSQLRepository()
+	categoryRepository := repository.NewCategorySQLRepository()
 
 	// service
-	booksService := services.NewBookService(sqlClientRepo.GetDB(), booksRepository, authorExternal, categoryExternal, validate)
+	categoryService := services.NewCategoryService(sqlClientRepo.GetDB(), categoryRepository, bookClient, validate)
 
 	router := route.Router{
-		App:            ginServer.App,
-		BookHandler:    grpc.NewBookGRPCHandler(booksService),
-		AuthMiddleware: api.NewAuthMiddleware(signaturer),
+		App:             ginServer.App,
+		CategoryHandler: grpc.NewCategoryGRPCHandler(categoryService),
+		AuthMiddleware:  api.NewAuthMiddleware(signaturer),
 	}
-	router.BookSetup(conf.AppEnvConfig.BookGRPCPort)
+	router.CategorySetup(conf.AppEnvConfig.CategoryGRPCPort)
 	echan := make(chan error)
 	go func() {
 		echan <- ginServer.Start()
@@ -82,12 +81,12 @@ func initSQL(conf *config.Config) *database.Database {
 		DbHost:   conf.DatabaseConfig.Dbhost,
 		DbUser:   conf.DatabaseConfig.Dbuser,
 		DbPass:   conf.DatabaseConfig.Dbpassword,
-		DbName:   conf.DatabaseConfig.BookDbname,
+		DbName:   conf.DatabaseConfig.CategoryDbname,
 		DbPort:   strconv.Itoa(conf.DatabaseConfig.Dbport),
 		DbPrefix: conf.DatabaseConfig.DbPrefix,
 	})
 	if conf.IsStaging() {
-		db.MigrateDB(&entity.Book{})
+		db.MigrateDB(&entity.Category{})
 	}
 	return db
 }

@@ -132,10 +132,11 @@ func (h *AuthorGRPCHandler) Detail(
 	booksData := make([]*books.Book, len(author.Books))
 	for i, book := range author.Books {
 		booksData[i] = &books.Book{
-			Id:       book.Id,
-			Title:    book.Title,
-			Isbn:     book.ISBN,
-			AuthorId: book.AuthorId,
+			Id:         book.Id,
+			Title:      book.Title,
+			Isbn:       book.ISBN,
+			AuthorId:   book.AuthorId,
+			CategoryId: book.CategoryId,
 		}
 	}
 	return &authors.GetAuthorByIDResponse{

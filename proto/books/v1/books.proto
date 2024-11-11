@@ -110,6 +110,7 @@ message Book {
   string title = 2;                       // Title of the book
   string isbn = 3;                        // ISBN of the book
   string author_id = 4;                   // ID of the author
+  string category_id = 5;                 //ID of Category
 }
 
 // Request message for creating a new book
@@ -118,13 +119,14 @@ message CreateBookRequest {
     json_schema: {
       title: "Create a new book"
       description: "Details for creating a new book"
-      required: ["title", "isbn", "author_id"]
+      required: ["title", "isbn", "author_id", "category_id"]
     }
-    example: "{\"title\": \"The Great Gatsby\", \"isbn\": \"978-3-16-148410-0\", \"author_id\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\"}"
+    example: "{\"title\": \"The Great Gatsby\", \"isbn\": \"978-3-16-148410-0\", \"author_id\": \"f47ac10b-58cc-4372-a567-0e02b2c3d479\", \"category_id\": \"7ea2b005-a3a5-4f4b-b762-75234fb6b4bd\"}"
   };
   string title = 1;
   string isbn = 2;
   string author_id = 3;
+  string category_id = 4;
 }
 
 // Response message for successful book creation
@@ -139,13 +141,14 @@ message UpdateBookRequest {
     json_schema: {
       title: "Update an existing book"
       description: "Details for updating an existing book"
-      required: ["id", "title", "isbn", "author_id"]
+      required: ["id", "title", "isbn", "author_id", "category_id"]
     }
   };
   string id = 1;                         // ID of the book to update
   string title = 2;
   string isbn = 3;
   string author_id = 4;
+  string category_id = 5;
 }
 
 // Response message for successful book update

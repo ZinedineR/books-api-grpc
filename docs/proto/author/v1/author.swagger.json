@@ -384,6 +384,10 @@
         "authorId": {
           "type": "string",
           "title": "ID of the author"
+        },
+        "categoryId": {
+          "type": "string",
+          "title": "ID of Category"
         }
       },
       "title": "Message representing a book entity"
