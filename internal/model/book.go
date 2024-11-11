@@ -2,6 +2,7 @@ package model
 
 import (
 	"books-api/internal/entity"
+	"books-api/proto/books/v1"
 	"github.com/google/uuid"
 )
 
@@ -58,4 +59,23 @@ type GetBookByIDReq struct {
 
 type GetBookByIDRes struct {
 	entity.Book
+}
+
+func BookGRPCToEntity(input *books.Book) *entity.Book {
+	return &entity.Book{
+		Id:       input.Id,
+		Title:    input.Title,
+		ISBN:     input.Isbn,
+		AuthorId: input.AuthorId,
+	}
+}
+
+func BookListGRPCToEntity(list []*books.Book) []*entity.Book {
+	var results []*entity.Book
+	if len(list) > 0 {
+		for _, book := range list {
+			results = append(results, BookGRPCToEntity(book))
+		}
+	}
+	return results
 }

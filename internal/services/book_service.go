@@ -40,7 +40,7 @@ func (s *BookServiceImpl) Create(
 		return nil, exception.InvalidArgument(errs)
 	}
 	body := req.ToEntity()
-	authorCheck, err := s.authorService.GetById(req.AuthorId)
+	authorCheck, err := s.authorService.GetById(ctx, req.AuthorId)
 	if err != nil {
 		return nil, exception.Internal(err.Error(), err)
 	}
@@ -69,7 +69,7 @@ func (s *BookServiceImpl) Update(
 	}
 	body := req.ToEntity()
 	body.Id = req.ID
-	authorCheck, err := s.authorService.GetById(req.AuthorId)
+	authorCheck, err := s.authorService.GetById(ctx, req.AuthorId)
 	if err != nil {
 		return nil, exception.Internal(err.Error(), err)
 	}
@@ -122,6 +122,9 @@ func (s *BookServiceImpl) Detail(ctx context.Context, req *model.GetBookByIDReq)
 	result, err := s.bookRepo.FindByID(ctx, s.db, req.ID)
 	if err != nil {
 		return nil, exception.Internal(err.Error(), err)
+	}
+	if result == nil {
+		return nil, exception.NotFound("book not found, id: " + req.ID)
 	}
 	return &model.GetBookByIDRes{
 		Book: *result,

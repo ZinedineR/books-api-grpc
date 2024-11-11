@@ -1,8 +1,10 @@
 package service
 
 import (
+	"books-api/internal/gateway/externalapi"
 	"books-api/internal/model"
 	"books-api/internal/repository"
+	"books-api/proto/books/v1"
 	"context"
 	//"books-api/pkg/exception"
 	"books-api/pkg/exception"
@@ -11,19 +13,22 @@ import (
 )
 
 type AuthorServiceImpl struct {
-	db         *gorm.DB
-	authorRepo repository.AuthorRepository
-	validate   *xvalidator.Validator
+	db          *gorm.DB
+	authorRepo  repository.AuthorRepository
+	bookService externalapi.BookSvcExternal
+	validate    *xvalidator.Validator
 }
 
 func NewAuthorService(
 	db *gorm.DB, repo repository.AuthorRepository,
+	bookService externalapi.BookSvcExternal,
 	validate *xvalidator.Validator,
 ) AuthorService {
 	return &AuthorServiceImpl{
-		db:         db,
-		authorRepo: repo,
-		validate:   validate,
+		db:          db,
+		authorRepo:  repo,
+		bookService: bookService,
+		validate:    validate,
 	}
 }
 
@@ -35,9 +40,27 @@ func (s *AuthorServiceImpl) Create(
 	if errs := s.validate.Struct(req); errs != nil {
 		return nil, exception.InvalidArgument(errs)
 	}
+	checker, err := s.authorRepo.FindByFilter(ctx, s.db,
+		model.FilterParams{
+			&model.FilterParam{
+				Field:    "name",
+				Value:    req.Name,
+				Operator: "=",
+			},
+		},
+		model.OrderParam{
+			Order:   "desc",
+			OrderBy: "name",
+		})
+	if err != nil {
+		return nil, exception.Internal(err.Error(), err)
+	}
+	if checker != nil {
+		return nil, exception.PermissionDenied("author with this name already exists")
+	}
 	body := req.ToEntity()
 	if err := s.authorRepo.CreateTx(ctx, tx, body); err != nil {
-		return nil, exception.Internal("err", err)
+		return nil, exception.Internal(err.Error(), err)
 	}
 
 	if err := tx.Commit().Error; err != nil {
@@ -57,9 +80,27 @@ func (s *AuthorServiceImpl) Update(
 		return nil, exception.InvalidArgument(errs)
 	}
 	body := req.ToEntity()
+	checker, err := s.authorRepo.FindByFilter(ctx, s.db,
+		model.FilterParams{
+			&model.FilterParam{
+				Field:    "name",
+				Value:    req.Name,
+				Operator: "=",
+			},
+		},
+		model.OrderParam{
+			Order:   "desc",
+			OrderBy: "name",
+		})
+	if err != nil {
+		return nil, exception.Internal(err.Error(), err)
+	}
+	if checker != nil && checker.Id != body.Id {
+		return nil, exception.PermissionDenied("author with this name already exists")
+	}
 	body.Id = req.ID
 	if err := s.authorRepo.UpdateTx(ctx, tx, body); err != nil {
-		return nil, exception.Internal("err", err)
+		return nil, exception.Internal(err.Error(), err)
 	}
 	if err := tx.Commit().Error; err != nil {
 		return nil, exception.Internal("commit transaction", err)
@@ -76,7 +117,26 @@ func (s *AuthorServiceImpl) Delete(ctx context.Context, req *model.DeleteAuthorR
 	defer tx.Rollback()
 
 	if err := s.authorRepo.DeleteByIDTx(ctx, tx, req.ID); err != nil {
-		return nil, exception.Internal("err", err)
+		return nil, exception.Internal(err.Error(), err)
+	}
+	booksResponse, err := s.bookService.Find(ctx, &books.GetAllBookRequest{
+		Filter: "author_id:" + req.ID + ":eq",
+	})
+	if err != nil {
+		return nil, exception.Internal(err.Error(), err)
+	}
+	//making author id as null in book
+	if len(booksResponse.Books) > 0 {
+		for _, book := range booksResponse.Books {
+			if _, err := s.bookService.Update(ctx, &books.UpdateBookRequest{
+				Id:       book.Id,
+				Title:    book.Title,
+				Isbn:     book.Isbn,
+				AuthorId: "",
+			}); err != nil {
+				return nil, exception.Internal(err.Error(), err)
+			}
+		}
 	}
 	if err := tx.Commit().Error; err != nil {
 		return nil, exception.Internal("commit transaction", err)
@@ -103,12 +163,19 @@ func (s *AuthorServiceImpl) Detail(ctx context.Context, req *model.GetAuthorByID
 ) {
 	result, err := s.authorRepo.FindByID(ctx, s.db, req.ID)
 	if err != nil {
-		return nil, exception.Internal("err", err)
+		return nil, exception.Internal(err.Error(), err)
 	}
 	if result == nil {
 		return nil, exception.NotFound("author not found, id: " + req.ID)
 	}
+	booksResponse, err := s.bookService.Find(ctx, &books.GetAllBookRequest{
+		Filter: "author_id:" + req.ID + ":eq",
+	})
+	if err != nil {
+		return nil, exception.Internal(err.Error(), err)
+	}
 	return &model.GetAuthorByIDRes{
 		Author: *result,
+		Books:  model.BookListGRPCToEntity(booksResponse.Books),
 	}, nil
 }

@@ -6,6 +6,7 @@ import (
 	api "books-api/internal/delivery/http/middleware"
 	"books-api/internal/delivery/http/route"
 	"books-api/internal/entity"
+	"books-api/internal/gateway/externalapi"
 	"books-api/internal/repository"
 	services "books-api/internal/services"
 	"books-api/pkg/database"
@@ -58,6 +59,7 @@ func main() {
 	})
 	// external
 	signaturer := signature.NewSignature(conf.AuthConfig.JwtSecretAccessToken)
+	bookClient := externalapi.NewBookExternalImpl(conf)
 	// repository
 	//booksRepository := repository.NewBookSQLRepository()
 	authorRepository := repository.NewAuthorSQLRepository()
@@ -65,7 +67,7 @@ func main() {
 
 	// service
 	//booksService := services.NewBookService(sqlClientRepo.GetDB(), booksRepository, validate)
-	authorService := services.NewAuthorService(sqlClientRepo.GetDB(), authorRepository, validate)
+	authorService := services.NewAuthorService(sqlClientRepo.GetDB(), authorRepository, bookClient, validate)
 	//userService := services.NewUserService(sqlClientRepo.GetDB(), userRepository, signaturer, validate)
 
 	router := route.Router{

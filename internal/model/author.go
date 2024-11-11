@@ -59,4 +59,5 @@ type GetAuthorByIDReq struct {
 
 type GetAuthorByIDRes struct {
 	entity.Author
+	Books []*entity.Book
 }

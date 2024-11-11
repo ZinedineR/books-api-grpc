@@ -4,6 +4,7 @@ import (
 	"books-api/internal/model"
 	service "books-api/internal/services"
 	authors "books-api/proto/author/v1"
+	"books-api/proto/books/v1"
 	"context"
 	"fmt"
 	"google.golang.org/grpc/codes"
@@ -85,9 +86,9 @@ func (h *AuthorGRPCHandler) Find(ctx context.Context, req *authors.GetAllAuthorR
 		return nil, status.Error(codes.PermissionDenied, errParse.Error())
 	}
 	findReq := &model.GetAllAuthorReq{
-		Page:   model.PaginationParam{},
-		Filter: nil,
-		Sort:   model.OrderParam{},
+		Page:   request.Page,
+		Filter: request.Filter,
+		Sort:   request.Order,
 	}
 	response, err := h.AuthorService.Find(ctx, findReq)
 	if err != nil {
@@ -127,12 +128,23 @@ func (h *AuthorGRPCHandler) Detail(
 	if err != nil {
 		return nil, status.Error(codes.Code(err.GetGrpcCode()), fmt.Sprint(err.Message))
 	}
+	// Map the response data to the proto response
+	booksData := make([]*books.Book, len(author.Books))
+	for i, book := range author.Books {
+		booksData[i] = &books.Book{
+			Id:       book.Id,
+			Title:    book.Title,
+			Isbn:     book.ISBN,
+			AuthorId: book.AuthorId,
+		}
+	}
 	return &authors.GetAuthorByIDResponse{
 		Author: &authors.Author{
 			Id:        author.Id,
 			Name:      author.Name,
 			Birthdate: timestamppb.New(*author.Birthdate),
 		},
+		Books: booksData,
 	}, nil
 }
 

@@ -2,6 +2,7 @@ syntax = "proto3";
 import "google/protobuf/timestamp.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
+import "proto/books/v1/books.proto";
 option go_package = "books-api/proto/authors/v1;authors";
 
 package proto.authors.v1;
@@ -190,6 +191,7 @@ message GetAuthorByIDRequest {
 // Response message for retrieving a specific author by ID
 message GetAuthorByIDResponse {
   Author author = 1;
+  repeated proto.books.v1.Book books = 2;
 }
 
 // Request message for deleting an author by ID

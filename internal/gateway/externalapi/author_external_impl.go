@@ -21,9 +21,9 @@ func NewAuthorExternalImpl(
 		authors: author,
 	}
 }
-func (b *AuthorExternalImpl) GetById(ID string) (*authors.GetAuthorByIDResponse, error) {
+func (b *AuthorExternalImpl) GetById(ctx context.Context, ID string) (*authors.GetAuthorByIDResponse, error) {
 
-	response, err := b.authors.Detail(context.Background(), &authors.GetAuthorByIDRequest{
+	response, err := b.authors.Detail(ctx, &authors.GetAuthorByIDRequest{
 		Id: ID,
 	})
 

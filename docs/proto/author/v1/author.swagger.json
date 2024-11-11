@@ -312,6 +312,13 @@
       "properties": {
         "author": {
           "$ref": "#/definitions/proto.authors.v1.Author"
+        },
+        "books": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/proto.books.v1.Book"
+          }
         }
       },
       "title": "Response message for retrieving a specific author by ID"
@@ -358,6 +365,28 @@
         }
       },
       "title": "Response message for successful author update"
+    },
+    "proto.books.v1.Book": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Book ID"
+        },
+        "title": {
+          "type": "string",
+          "title": "Title of the book"
+        },
+        "isbn": {
+          "type": "string",
+          "title": "ISBN of the book"
+        },
+        "authorId": {
+          "type": "string",
+          "title": "ID of the author"
+        }
+      },
+      "title": "Message representing a book entity"
     }
   }
 }
