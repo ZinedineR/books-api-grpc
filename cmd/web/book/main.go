@@ -44,16 +44,19 @@ func main() {
 	signaturer := signature.NewSignature(conf.AuthConfig.JwtSecretAccessToken)
 	authorExternal := externalapi.NewAuthorExternalImpl(conf)
 	categoryExternal := externalapi.NewCategoryExternalImpl(conf)
+	userExternal := externalapi.NewUserExternalImpl(conf)
 	// repository
 	booksRepository := repository.NewBookSQLRepository()
-
+	bookLendingRepository := repository.NewBookLendingSQLRepository()
 	// service
 	booksService := services.NewBookService(sqlClientRepo.GetDB(), booksRepository, authorExternal, categoryExternal, validate)
+	booksLending := services.NewBookLendingService(sqlClientRepo.GetDB(), bookLendingRepository, booksRepository, userExternal, validate)
 
 	router := route.Router{
-		App:            ginServer.App,
-		BookHandler:    grpc.NewBookGRPCHandler(booksService),
-		AuthMiddleware: api.NewAuthMiddleware(signaturer),
+		App:                ginServer.App,
+		BookHandler:        grpc.NewBookGRPCHandler(booksService),
+		BookLendingHandler: grpc.NewBookLendingGRPCHandler(booksLending),
+		AuthMiddleware:     api.NewAuthMiddleware(signaturer),
 	}
 	router.BookSetup(conf.AppEnvConfig.BookGRPCPort)
 	echan := make(chan error)
@@ -87,7 +90,7 @@ func initSQL(conf *config.Config) *database.Database {
 		DbPrefix: conf.DatabaseConfig.DbPrefix,
 	})
 	if conf.IsStaging() {
-		db.MigrateDB(&entity.Book{})
+		db.MigrateDB(&entity.Book{}, &entity.BookLending{})
 	}
 	return db
 }

@@ -119,26 +119,6 @@ func (s *CategoryServiceImpl) Delete(ctx context.Context, req *model.DeleteCateg
 	if err := s.categoryRepo.DeleteByIDTx(ctx, tx, req.ID); err != nil {
 		return nil, exception.Internal(err.Error(), err)
 	}
-	booksResponse, err := s.bookService.Find(ctx, &books.GetAllBookRequest{
-		Filter: "category_id:" + req.ID + ":eq",
-	})
-	if err != nil {
-		return nil, exception.Internal(err.Error(), err)
-	}
-	//making category id as null in book
-	if len(booksResponse.Books) > 0 {
-		for _, book := range booksResponse.Books {
-			if _, err := s.bookService.Update(ctx, &books.UpdateBookRequest{
-				Id:         book.Id,
-				Title:      book.Title,
-				Isbn:       book.Isbn,
-				AuthorId:   book.Id,
-				CategoryId: "",
-			}); err != nil {
-				return nil, exception.Internal(err.Error(), err)
-			}
-		}
-	}
 	if err := tx.Commit().Error; err != nil {
 		return nil, exception.Internal("commit transaction", err)
 	}

@@ -50,10 +50,12 @@ func (b *BookExternalImpl) Update(ctx context.Context, req *books.UpdateBookRequ
 	*books.UpdateBookResponse, error,
 ) {
 	response, err := b.books.Update(ctx, &books.UpdateBookRequest{
-		Id:       req.GetId(),
-		Title:    req.GetTitle(),
-		Isbn:     req.GetIsbn(),
-		AuthorId: req.GetAuthorId(),
+		Id:         req.GetId(),
+		Title:      req.GetTitle(),
+		Isbn:       req.GetIsbn(),
+		AuthorId:   req.GetAuthorId(),
+		CategoryId: req.GetCategoryId(),
+		Stock:      req.GetStock(),
 	})
 
 	if err != nil {

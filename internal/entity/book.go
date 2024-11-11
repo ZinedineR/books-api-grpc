@@ -10,6 +10,7 @@ type Book struct {
 	ISBN       string `json:"isbn" example:"978-3-16-148410-0" gorm:"uniqueIndex"`
 	AuthorId   string `json:"author_id" gorm:"uuid" example:"f47ac10b-58cc-4372-a567-0e02b2c3d479"`
 	CategoryId string `json:"category_id" gorm:"uuid" example:"7ea2b005-a3a5-4f4b-b762-75234fb6b4bd"`
+	Stock      uint   `json:"stock" example:"1" gorm:"default:1"`
 }
 
 func (model *Book) TableName() string {

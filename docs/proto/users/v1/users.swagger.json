@@ -73,9 +73,128 @@
           "proto.users.v1.UserService"
         ]
       }
+    },
+    "/api/v1/users": {
+      "get": {
+        "summary": "Find a list of users with pagination",
+        "operationId": "Find",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.users.v1.GetAllUserResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "Page number for pagination",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "Number of items per page",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "filter",
+            "description": "Filter criteria for users",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "description": "Sorting criteria",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.users.v1.UserService"
+        ]
+      }
+    },
+    "/api/v1/users/{id}": {
+      "get": {
+        "summary": "Get user details by ID",
+        "operationId": "Detail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.users.v1.GetUserByIDResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "User ID for details retrieval",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.users.v1.UserService"
+        ]
+      }
     }
   },
   "definitions": {
+    "proto.users.v1.GetAllUserResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "title": "Pagination data",
+          "allOf": [
+            {
+              "$ref": "#/definitions/proto.users.v1.PaginationResponse"
+            }
+          ]
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/proto.users.v1.User"
+          },
+          "title": "List of user entities"
+        },
+        "response": {
+          "title": "General mutation response",
+          "allOf": [
+            {
+              "$ref": "#/definitions/proto.users.v1.MutationResponse"
+            }
+          ]
+        }
+      },
+      "title": "Response message for retrieving a paginated list of users"
+    },
+    "proto.users.v1.GetUserByIDResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "title": "Detailed user information",
+          "allOf": [
+            {
+              "$ref": "#/definitions/proto.users.v1.User"
+            }
+          ]
+        }
+      },
+      "title": "Response message for retrieving a specific user by ID"
+    },
     "proto.users.v1.LoginRequest": {
       "type": "object",
       "example": {
@@ -122,6 +241,32 @@
         }
       },
       "title": "Mutation response for tracking success messages on operations"
+    },
+    "proto.users.v1.PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Current page"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32",
+          "title": "Page size"
+        },
+        "totalPages": {
+          "type": "string",
+          "format": "int64",
+          "title": "Total pages available"
+        },
+        "totalRows": {
+          "type": "string",
+          "format": "int64",
+          "title": "Total number of rows"
+        }
+      },
+      "title": "Pagination response for paginated requests"
     },
     "proto.users.v1.RegisterRequest": {
       "type": "object",

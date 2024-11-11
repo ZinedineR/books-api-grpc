@@ -111,6 +111,7 @@ message Book {
   string isbn = 3;                        // ISBN of the book
   string author_id = 4;                   // ID of the author
   string category_id = 5;                 //ID of Category
+  uint32 stock = 6;                       //Stock of Book
 }
 
 // Request message for creating a new book
@@ -127,6 +128,7 @@ message CreateBookRequest {
   string isbn = 2;
   string author_id = 3;
   string category_id = 4;
+  uint32 stock = 5;                       //Stock of Book
 }
 
 // Response message for successful book creation
@@ -149,6 +151,7 @@ message UpdateBookRequest {
   string isbn = 3;
   string author_id = 4;
   string category_id = 5;
+  uint32 stock = 6;                       //Stock of Book
 }
 
 // Response message for successful book update

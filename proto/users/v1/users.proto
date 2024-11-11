@@ -29,6 +29,19 @@ service UserService {
       body: "*"
     };
   };
+  // Find a list of users with pagination
+  rpc Find (GetAllUserRequest) returns (GetAllUserResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/users"
+    };
+  };
+
+  // Get user details by ID
+  rpc Detail (GetUserByIDRequest) returns (GetUserByIDResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/users/{id}"
+    };
+  };
 }
 
 // User message that represents user entity
@@ -76,6 +89,39 @@ message LoginRequest {
 message LoginResponse {
   string username = 1;                      // Username of the logged-in user
   string token = 2;                         // JWT token
+}
+
+// Request message for retrieving a paginated list of users
+message GetAllUserRequest {
+  int32 page = 1;                           // Page number for pagination
+  int32 page_size = 2;                      // Number of items per page
+  string filter = 3;                        // Filter criteria for users
+  string sort = 4;                          // Sorting criteria
+}
+
+// Response message for retrieving a paginated list of users
+message GetAllUserResponse {
+  PaginationResponse pagination = 1;        // Pagination data
+  repeated User users = 2;                  // List of user entities
+  MutationResponse response = 3;            // General mutation response
+}
+
+// Request message for retrieving a user by ID
+message GetUserByIDRequest {
+  string id = 1;                            // User ID for details retrieval
+}
+
+// Response message for retrieving a specific user by ID
+message GetUserByIDResponse {
+  User user = 1;                            // Detailed user information
+}
+
+// Pagination response for paginated requests
+message PaginationResponse {
+  int32 page = 1;                           // Current page
+  int32 page_size = 2;                      // Page size
+  int64 total_pages = 3;                    // Total pages available
+  int64 total_rows = 4;                     // Total number of rows
 }
 
 // Mutation response for tracking success messages on operations

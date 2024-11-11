@@ -119,26 +119,6 @@ func (s *AuthorServiceImpl) Delete(ctx context.Context, req *model.DeleteAuthorR
 	if err := s.authorRepo.DeleteByIDTx(ctx, tx, req.ID); err != nil {
 		return nil, exception.Internal(err.Error(), err)
 	}
-	booksResponse, err := s.bookService.Find(ctx, &books.GetAllBookRequest{
-		Filter: "author_id:" + req.ID + ":eq",
-	})
-	if err != nil {
-		return nil, exception.Internal(err.Error(), err)
-	}
-	//making author id as null in book
-	if len(booksResponse.Books) > 0 {
-		for _, book := range booksResponse.Books {
-			if _, err := s.bookService.Update(ctx, &books.UpdateBookRequest{
-				Id:         book.Id,
-				Title:      book.Title,
-				Isbn:       book.Isbn,
-				AuthorId:   "",
-				CategoryId: book.CategoryId,
-			}); err != nil {
-				return nil, exception.Internal(err.Error(), err)
-			}
-		}
-	}
 	if err := tx.Commit().Error; err != nil {
 		return nil, exception.Internal("commit transaction", err)
 	}

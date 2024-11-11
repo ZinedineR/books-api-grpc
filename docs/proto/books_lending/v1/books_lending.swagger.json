@@ -1,0 +1,310 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Book Lending Service",
+    "description": "Service to handle book lending management",
+    "version": "v1"
+  },
+  "tags": [
+    {
+      "name": "proto.booklending.v1.BookLendingService"
+    }
+  ],
+  "host": "localhost:8082",
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/booklendings": {
+      "get": {
+        "summary": "Retrieve all book lendings with pagination",
+        "operationId": "Find",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.booklending.v1.GetAllBookLendingResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "page",
+            "description": "Page number for pagination",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "pageSize",
+            "description": "Page size for pagination",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "filter",
+            "description": "Filter criteria",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "sort",
+            "description": "Sort order",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.booklending.v1.BookLendingService"
+        ]
+      },
+      "post": {
+        "summary": "Create a new book lending record",
+        "operationId": "Create",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.booklending.v1.CreateBookLendingResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.booklending.v1.CreateBookLendingRequest"
+            }
+          }
+        ],
+        "tags": [
+          "proto.booklending.v1.BookLendingService"
+        ]
+      }
+    },
+    "/api/v1/booklendings/extend/{id}": {
+      "put": {
+        "summary": "Extend the lending period of a book",
+        "operationId": "Extend",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.booklending.v1.UpdateBookLendingResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID of the book lending record to extend",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.booklending.v1.BookLendingService.ExtendBody"
+            }
+          }
+        ],
+        "tags": [
+          "proto.booklending.v1.BookLendingService"
+        ]
+      }
+    },
+    "/api/v1/booklendings/return/{id}": {
+      "put": {
+        "summary": "Return a book (mark as returned)",
+        "operationId": "Return",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.booklending.v1.UpdateBookLendingResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID of the book lending record to return",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/proto.booklending.v1.BookLendingService.ReturnBody"
+            }
+          }
+        ],
+        "tags": [
+          "proto.booklending.v1.BookLendingService"
+        ]
+      }
+    },
+    "/api/v1/booklendings/{id}": {
+      "get": {
+        "summary": "Retrieve a specific book lending by ID",
+        "operationId": "Detail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/proto.booklending.v1.GetBookLendingByIDResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "ID of the book lending to retrieve",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "proto.booklending.v1.BookLendingService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "proto.booklending.v1.BookLending": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "Lending ID"
+        },
+        "userId": {
+          "type": "string",
+          "title": "User ID who borrowed the book"
+        },
+        "bookId": {
+          "type": "string",
+          "title": "Book ID"
+        },
+        "returned": {
+          "type": "boolean",
+          "title": "Has the book been returned"
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Start date of the lending"
+        },
+        "endDate": {
+          "type": "string",
+          "format": "date-time",
+          "title": "End date of the lending"
+        }
+      }
+    },
+    "proto.booklending.v1.BookLendingService.ExtendBody": {
+      "type": "object",
+      "title": "Request message for extending a book lending period"
+    },
+    "proto.booklending.v1.BookLendingService.ReturnBody": {
+      "type": "object",
+      "title": "Request message for returning a book lending record"
+    },
+    "proto.booklending.v1.CreateBookLendingRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "title": "ID of the user borrowing the book"
+        },
+        "bookId": {
+          "type": "string",
+          "title": "ID of the book being borrowed"
+        }
+      },
+      "title": "Request message for creating a new book lending record"
+    },
+    "proto.booklending.v1.CreateBookLendingResponse": {
+      "type": "object",
+      "properties": {
+        "bookLending": {
+          "$ref": "#/definitions/proto.booklending.v1.BookLending"
+        }
+      },
+      "title": "Response message for successful book lending creation"
+    },
+    "proto.booklending.v1.GetAllBookLendingResponse": {
+      "type": "object",
+      "properties": {
+        "pagination": {
+          "$ref": "#/definitions/proto.booklending.v1.PaginationResponse"
+        },
+        "bookLendings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/proto.booklending.v1.BookLending"
+          }
+        }
+      },
+      "title": "Response message for retrieving a paginated list of book lendings"
+    },
+    "proto.booklending.v1.GetBookLendingByIDResponse": {
+      "type": "object",
+      "properties": {
+        "bookLending": {
+          "$ref": "#/definitions/proto.booklending.v1.BookLending"
+        }
+      },
+      "title": "Response message for retrieving a specific book lending by ID"
+    },
+    "proto.booklending.v1.PaginationResponse": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "pageSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "totalPages": {
+          "type": "string",
+          "format": "int64"
+        },
+        "totalRows": {
+          "type": "string",
+          "format": "int64"
+        }
+      },
+      "title": "Pagination response for paginated requests"
+    },
+    "proto.booklending.v1.UpdateBookLendingResponse": {
+      "type": "object",
+      "properties": {
+        "bookLending": {
+          "$ref": "#/definitions/proto.booklending.v1.BookLending"
+        }
+      },
+      "title": "Response message for successful book lending update (return or extend)"
+    }
+  }
+}

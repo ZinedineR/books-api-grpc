@@ -1,0 +1,122 @@
+syntax = "proto3";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "books-api/proto/booklending/v1;booklending";
+
+package proto.booklending.v1;
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Book Lending Service",
+    version: "v1",
+    description: "Service to handle book lending management"
+  },
+  host: "localhost:8082",
+};
+service BookLendingService {
+  // Create a new book lending record
+  rpc Create (CreateBookLendingRequest) returns (CreateBookLendingResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/booklendings"
+      body: "*"
+    };
+  }
+
+  // Return a book (mark as returned)
+  rpc Return (ReturnBookLendingRequest) returns (UpdateBookLendingResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/booklendings/return/{id}"
+      body: "*"
+    };
+  }
+
+  // Extend the lending period of a book
+  rpc Extend (ExtendBookLendingRequest) returns (UpdateBookLendingResponse) {
+    option (google.api.http) = {
+      put: "/api/v1/booklendings/extend/{id}"
+      body: "*"
+    };
+  }
+
+  // Retrieve all book lendings with pagination
+  rpc Find (GetAllBookLendingRequest) returns (GetAllBookLendingResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/booklendings"
+    };
+  }
+
+  // Retrieve a specific book lending by ID
+  rpc Detail (GetBookLendingByIDRequest) returns (GetBookLendingByIDResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/booklendings/{id}"
+    };
+  }
+}
+
+message BookLending {
+  string id = 1;                          // Lending ID
+  string user_id = 2;                     // User ID who borrowed the book
+  string book_id = 3;                     // Book ID
+  bool returned = 4;                      // Has the book been returned
+  google.protobuf.Timestamp start_date = 5; // Start date of the lending
+  google.protobuf.Timestamp end_date = 6;   // End date of the lending
+}
+
+// Request message for creating a new book lending record
+message CreateBookLendingRequest {
+  string user_id = 1;                     // ID of the user borrowing the book
+  string book_id = 2;                     // ID of the book being borrowed
+}
+
+// Response message for successful book lending creation
+message CreateBookLendingResponse {
+  BookLending book_lending = 1;
+}
+
+// Request message for returning a book lending record
+message ReturnBookLendingRequest {
+  string id = 1;                          // ID of the book lending record to return
+}
+
+// Request message for extending a book lending period
+message ExtendBookLendingRequest {
+  string id = 1;                          // ID of the book lending record to extend
+}
+
+// Response message for successful book lending update (return or extend)
+message UpdateBookLendingResponse {
+  BookLending book_lending = 1;
+}
+
+// Request message for retrieving a paginated list of book lendings
+message GetAllBookLendingRequest {
+  int32 page = 1;                        // Page number for pagination
+  int32 page_size = 2;                   // Page size for pagination
+  string filter = 3;                     // Filter criteria
+  string sort = 4;                       // Sort order
+}
+
+// Response message for retrieving a paginated list of book lendings
+message GetAllBookLendingResponse {
+  PaginationResponse pagination = 1;
+  repeated BookLending book_lendings = 2;
+}
+
+// Request message for retrieving a specific book lending by ID
+message GetBookLendingByIDRequest {
+  string id = 1;                         // ID of the book lending to retrieve
+}
+
+// Response message for retrieving a specific book lending by ID
+message GetBookLendingByIDResponse {
+  BookLending book_lending = 1;
+}
+
+// Pagination response for paginated requests
+message PaginationResponse {
+  int32 page = 1;
+  int32 page_size = 2;
+  int64 total_pages = 3;
+  int64 total_rows = 4;
+}

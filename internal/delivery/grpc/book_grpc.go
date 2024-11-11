@@ -28,6 +28,7 @@ func (h *BookGRPCHandler) Create(ctx context.Context, req *books.CreateBookReque
 			ISBN:       req.GetIsbn(),
 			AuthorId:   req.GetAuthorId(),
 			CategoryId: req.GetCategoryId(),
+			Stock:      req.GetStock(),
 		},
 	}
 	response, err := h.BookService.Create(ctx, book)
@@ -41,6 +42,7 @@ func (h *BookGRPCHandler) Create(ctx context.Context, req *books.CreateBookReque
 			Isbn:       response.ISBN,
 			AuthorId:   response.AuthorId,
 			CategoryId: response.CategoryId,
+			Stock:      uint32(response.Stock),
 		},
 		Response: &books.MutationResponse{
 			Message: "Book created successfully",
@@ -56,6 +58,7 @@ func (h *BookGRPCHandler) Update(ctx context.Context, req *books.UpdateBookReque
 			ISBN:       req.GetIsbn(),
 			AuthorId:   req.GetAuthorId(),
 			CategoryId: req.GetCategoryId(),
+			Stock:      req.GetStock(),
 		},
 		ID: req.GetId(),
 	}
@@ -70,6 +73,7 @@ func (h *BookGRPCHandler) Update(ctx context.Context, req *books.UpdateBookReque
 			Isbn:       response.ISBN,
 			AuthorId:   response.AuthorId,
 			CategoryId: response.CategoryId,
+			Stock:      uint32(response.Stock),
 		},
 		Response: &books.MutationResponse{
 			Message: "Book updated successfully",
@@ -104,6 +108,7 @@ func (h *BookGRPCHandler) Find(ctx context.Context, req *books.GetAllBookRequest
 			Isbn:       book.ISBN,
 			AuthorId:   book.AuthorId,
 			CategoryId: book.CategoryId,
+			Stock:      uint32(book.Stock),
 		}
 	}
 	return &books.GetAllBookResponse{
@@ -135,6 +140,7 @@ func (h *BookGRPCHandler) Detail(ctx context.Context, req *books.GetBookByIDRequ
 			Isbn:       response.ISBN,
 			AuthorId:   response.AuthorId,
 			CategoryId: response.CategoryId,
+			Stock:      uint32(response.Stock),
 		},
 	}, nil
 }

@@ -388,6 +388,11 @@
         "categoryId": {
           "type": "string",
           "title": "ID of Category"
+        },
+        "stock": {
+          "type": "integer",
+          "format": "int64",
+          "title": "Stock of Book"
         }
       },
       "title": "Message representing a book entity"

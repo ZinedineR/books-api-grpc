@@ -53,7 +53,6 @@ func main() {
 		AuthMiddleware: api.NewAuthMiddleware(signaturer),
 	}
 	router.UserSetup(conf.AppEnvConfig.UserGRPCPort)
-	router.SwaggerRouter()
 	echan := make(chan error)
 	go func() {
 		echan <- ginServer.Start()

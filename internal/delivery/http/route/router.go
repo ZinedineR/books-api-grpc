@@ -7,17 +7,18 @@ import (
 )
 
 type Router struct {
-	App             *gin.Engine
-	UserHandler     *grpc.UserGRPCHandler
-	AuthorHandler   *grpc.AuthorGRPCHandler
-	CategoryHandler *grpc.CategoryGRPCHandler
-	BookHandler     *grpc.BookGRPCHandler
-	AuthMiddleware  *api.AuthMiddleware
+	App                *gin.Engine
+	UserHandler        *grpc.UserGRPCHandler
+	AuthorHandler      *grpc.AuthorGRPCHandler
+	CategoryHandler    *grpc.CategoryGRPCHandler
+	BookHandler        *grpc.BookGRPCHandler
+	BookLendingHandler *grpc.BookLendingGRPCHandler
+	AuthMiddleware     *api.AuthMiddleware
 }
 
 func (h *Router) UserSetup(port string) {
 	h.App.Use(h.AuthMiddleware.ErrorHandler)
-	guestApi := h.App.Group("/api/v1/auth")
+	guestApi := h.App.Group("/api/v1")
 	{
 		userGRPC := h.GRPCUserHTTPSetup(port)
 		guestApi.Any("/*grpc_gateway", gin.WrapH(userGRPC))

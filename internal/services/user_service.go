@@ -107,3 +107,30 @@ func (s *UserServiceImpl) Login(ctx context.Context, req *model.CreateUserReq) (
 		Token:    jwtToken,
 	}, nil
 }
+
+func (s *UserServiceImpl) Find(ctx context.Context, req *model.GetAllUserReq) (
+	*model.GetAllUserRes, *exception.Exception,
+) {
+	result, err := s.userRepo.FindByPagination(ctx, s.db, req.Page, req.Sort, req.Filter)
+	if err != nil {
+		return nil, exception.Internal("failed to get user", err)
+	}
+	return &model.GetAllUserRes{
+		PaginationData: *result,
+	}, nil
+}
+
+func (s *UserServiceImpl) Detail(ctx context.Context, req *model.GetUserByIDReq) (
+	*model.GetUserByIDRes, *exception.Exception,
+) {
+	result, err := s.userRepo.FindByID(ctx, s.db, req.ID)
+	if err != nil {
+		return nil, exception.Internal(err.Error(), err)
+	}
+	if result == nil {
+		return nil, exception.NotFound("user not found, id: " + req.ID)
+	}
+	return &model.GetUserByIDRes{
+		User: *result,
+	}, nil
+}
