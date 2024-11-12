@@ -39,14 +39,14 @@ func NewGRPCGatewayClient(server *grpc.Server, net net.Listener, port string) *g
 	return client
 }
 
-func NewGRPCListenerClient(port string) *grpc.ClientConn {
+func NewGRPCListenerClient(host, port string) *grpc.ClientConn {
 	var (
 		client *grpc.ClientConn
 		err    error
 	)
 	for {
 		client, err = grpc.NewClient(
-			"0.0.0.0:"+port,
+			host+":"+port,
 			grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			slog.Error(fmt.Sprintf("failed to connect to port %s of grpc client", port), "error", err.Error())

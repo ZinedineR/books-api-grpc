@@ -15,7 +15,7 @@ type AuthorExternalImpl struct {
 func NewAuthorExternalImpl(
 	config *config.Config,
 ) AuthorSvcExternal {
-	author := authors.NewAuthorServiceClient(server.NewGRPCListenerClient(config.AppEnvConfig.AuthorGRPCPort))
+	author := authors.NewAuthorServiceClient(server.NewGRPCListenerClient(config.AppEnvConfig.AuthorListenerHost, config.AppEnvConfig.AuthorGRPCPort))
 	return &AuthorExternalImpl{
 		config:  config,
 		authors: author,

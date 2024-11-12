@@ -11,13 +11,15 @@ COPY go.sum ./
 RUN go mod download
 
 COPY ./ ./
-RUN go build -o books-api-web ./cmd/web
+RUN go build -o books-api-user ./cmd/web/user
+RUN go build -o books-api-author ./cmd/web/author
+RUN go build -o books-api-category ./cmd/web/category
+RUN go build -o books-api-book ./cmd/web/book
 
-# RUN go run ./script/migration/create_migration_script.go
 FROM alpine:edge
 
 WORKDIR /app
-COPY --from=build /app/books-api-web .
-#EXPOSE 9004
-
-#CMD ["./books-api"]
+COPY --from=build /app/books-api-user .
+COPY --from=build /app/books-api-author .
+COPY --from=build /app/books-api-category .
+COPY --from=build /app/books-api-book .

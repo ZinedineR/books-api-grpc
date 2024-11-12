@@ -1,0 +1,1000 @@
+{
+	"info": {
+		"_postman_id": "e391d895-305d-45d3-918a-1fdce31d6f29",
+		"name": "Book Service",
+		"description": "Service to handle book management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19163613",
+		"_collection_link": "https://www.postman.com/martian-resonance-137574/workspace/books-api/collection/19163613-e391d895-305d-45d3-918a-1fdce31d6f29?action=share&source=collection_link&creator=19163613"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "v1",
+					"item": [
+						{
+							"name": "books",
+							"item": [
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Retrieve a specific book by ID",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/books/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"books",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "",
+															"description": "(Required) ID of the book to retrieve"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "A successful response.",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/books/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"books",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"book\": {\n    \"id\": \"<string>\",\n    \"title\": \"<string>\",\n    \"isbn\": \"<string>\",\n    \"authorId\": \"<string>\"\n  }\n}"
+												}
+											]
+										},
+										{
+											"name": "Delete a book by ID",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/books/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"books",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "ad3b7a3d-9cef-4130-bdca-b36324c3cf4d",
+															"description": "(Required) ID of the book to delete"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "A successful response.",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/books/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"books",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"response\": {\n    \"message\": \"<string>\"\n  }\n}"
+												}
+											]
+										},
+										{
+											"name": "Update an existing book",
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"title\": \"The Great Gatsby\",\n  \"isbn\": \"978-3-16-148410-0\",\n  \"author_id\": \"9c136338-ec6e-4613-a437-85039464f7bb\",\n  \"category_id\":\"e5f71c01-f091-4f5b-b46d-8f77472da0ee\",\n  \"stock\": 5\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/books/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"books",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "7ea2b005-a3a5-4f4b-b762-75234fb6b4bd",
+															"description": "(Required) ID of the book to update"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "A successful response.",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"title\": \"<string>\",\n  \"isbn\": \"<string>\",\n  \"authorId\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/books/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"books",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"book\": {\n    \"id\": \"<string>\",\n    \"title\": \"<string>\",\n    \"isbn\": \"<string>\",\n    \"authorId\": \"<string>\"\n  },\n  \"response\": {\n    \"message\": \"<string>\"\n  }\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Retrieve all books with pagination",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/books",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"books"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Page number for pagination",
+													"disabled": true
+												},
+												{
+													"key": "pageSize",
+													"value": "<integer>",
+													"description": "Page size for pagination",
+													"disabled": true
+												},
+												{
+													"key": "filter",
+													"value": "<string>",
+													"description": "Filter criteria",
+													"disabled": true
+												},
+												{
+													"key": "sort",
+													"value": "<string>",
+													"description": "Sort order",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "A successful response.",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/books?page=<integer>&pageSize=<integer>&filter=<string>&sort=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"books"
+													],
+													"query": [
+														{
+															"key": "page",
+															"value": "<integer>",
+															"description": "Page number for pagination"
+														},
+														{
+															"key": "pageSize",
+															"value": "<integer>",
+															"description": "Page size for pagination"
+														},
+														{
+															"key": "filter",
+															"value": "<string>",
+															"description": "Filter criteria"
+														},
+														{
+															"key": "sort",
+															"value": "<string>",
+															"description": "Sort order"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"pagination\": {\n    \"page\": \"<integer>\",\n    \"pageSize\": \"<integer>\",\n    \"totalPages\": \"<int64>\",\n    \"totalRows\": \"<int64>\"\n  },\n  \"books\": [\n    {\n      \"id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"isbn\": \"<string>\",\n      \"authorId\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"isbn\": \"<string>\",\n      \"authorId\": \"<string>\"\n    }\n  ],\n  \"response\": {\n    \"message\": \"<string>\"\n  }\n}"
+										}
+									]
+								},
+								{
+									"name": "Create a new book",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"title\": \"The Great Gatsby\",\n  \"isbn\": \"978-3-16-148410-7\",\n  \"author_id\": \"30238c0c-38f7-4e5d-8857-a0bddf0000bb\",\n  \"category_id\":\"c4d44cce-de03-491d-904e-322445218e03\",\n  \"stock\": 5\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/books",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"books"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "A successful response.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"title\": \"<string>\",\n  \"isbn\": \"<string>\",\n  \"authorId\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/books",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"books"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"book\": {\n    \"id\": \"<string>\",\n    \"title\": \"<string>\",\n    \"isbn\": \"<string>\",\n    \"authorId\": \"<string>\"\n  },\n  \"response\": {\n    \"message\": \"<string>\"\n  }\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "booklendings",
+							"item": [
+								{
+									"name": "extend",
+									"item": [
+										{
+											"name": "{id}",
+											"item": [
+												{
+													"name": "Extend the lending period of a book",
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/booklendings/extend/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"booklendings",
+																"extend",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id",
+																	"value": "84323938-af9c-4f09-9265-6030389b9c23",
+																	"description": "(Required) ID of the book lending record to extend"
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "A successful response.",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{\n  \"newEndDate\": \"<dateTime>\"\n}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/booklendings/extend/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"booklendings",
+																		"extend",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "id"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"bookLending\": {\n    \"id\": \"<string>\",\n    \"userId\": \"<string>\",\n    \"bookId\": \"<string>\",\n    \"returned\": \"<boolean>\",\n    \"startDate\": \"<dateTime>\",\n    \"endDate\": \"<dateTime>\"\n  }\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "return",
+									"item": [
+										{
+											"name": "{id}",
+											"item": [
+												{
+													"name": "Return a book (mark as returned)",
+													"request": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/booklendings/return/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"booklendings",
+																"return",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id",
+																	"value": "e2e25df1-1c8d-44b2-8759-09254d24df47",
+																	"description": "(Required) ID of the book lending record to return"
+																}
+															]
+														}
+													},
+													"response": [
+														{
+															"name": "A successful response.",
+															"originalRequest": {
+																"method": "PUT",
+																"header": [
+																	{
+																		"key": "Content-Type",
+																		"value": "application/json"
+																	},
+																	{
+																		"key": "Accept",
+																		"value": "application/json"
+																	}
+																],
+																"body": {
+																	"mode": "raw",
+																	"raw": "{}",
+																	"options": {
+																		"raw": {
+																			"headerFamily": "json",
+																			"language": "json"
+																		}
+																	}
+																},
+																"url": {
+																	"raw": "{{baseUrl}}/api/v1/booklendings/return/:id",
+																	"host": [
+																		"{{baseUrl}}"
+																	],
+																	"path": [
+																		"api",
+																		"v1",
+																		"booklendings",
+																		"return",
+																		":id"
+																	],
+																	"variable": [
+																		{
+																			"key": "id"
+																		}
+																	]
+																}
+															},
+															"status": "OK",
+															"code": 200,
+															"_postman_previewlanguage": "json",
+															"header": [
+																{
+																	"key": "Content-Type",
+																	"value": "application/json"
+																}
+															],
+															"cookie": [],
+															"body": "{\n  \"bookLending\": {\n    \"id\": \"<string>\",\n    \"userId\": \"<string>\",\n    \"bookId\": \"<string>\",\n    \"returned\": \"<boolean>\",\n    \"startDate\": \"<dateTime>\",\n    \"endDate\": \"<dateTime>\"\n  }\n}"
+														}
+													]
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Retrieve a specific book lending by ID",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/booklendings/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"booklendings",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<string>",
+															"description": "(Required) ID of the book lending to retrieve"
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "A successful response.",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/booklendings/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"booklendings",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"bookLending\": {\n    \"id\": \"<string>\",\n    \"userId\": \"<string>\",\n    \"bookId\": \"<string>\",\n    \"returned\": \"<boolean>\",\n    \"startDate\": \"<dateTime>\",\n    \"endDate\": \"<dateTime>\"\n  }\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Retrieve all book lendings with pagination",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/booklendings",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"booklendings"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"description": "Page number for pagination",
+													"disabled": true
+												},
+												{
+													"key": "pageSize",
+													"value": "<integer>",
+													"description": "Page size for pagination",
+													"disabled": true
+												},
+												{
+													"key": "filter",
+													"value": "<string>",
+													"description": "Filter criteria",
+													"disabled": true
+												},
+												{
+													"key": "sort",
+													"value": "<string>",
+													"description": "Sort order",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "A successful response.",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/booklendings?page=<integer>&pageSize=<integer>&filter=<string>&sort=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"booklendings"
+													],
+													"query": [
+														{
+															"key": "page",
+															"value": "<integer>",
+															"description": "Page number for pagination"
+														},
+														{
+															"key": "pageSize",
+															"value": "<integer>",
+															"description": "Page size for pagination"
+														},
+														{
+															"key": "filter",
+															"value": "<string>",
+															"description": "Filter criteria"
+														},
+														{
+															"key": "sort",
+															"value": "<string>",
+															"description": "Sort order"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"pagination\": {\n    \"page\": \"<integer>\",\n    \"pageSize\": \"<integer>\",\n    \"totalPages\": \"<int64>\",\n    \"totalRows\": \"<int64>\"\n  },\n  \"bookLendings\": [\n    {\n      \"id\": \"<string>\",\n      \"userId\": \"<string>\",\n      \"bookId\": \"<string>\",\n      \"returned\": \"<boolean>\",\n      \"startDate\": \"<dateTime>\",\n      \"endDate\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"userId\": \"<string>\",\n      \"bookId\": \"<string>\",\n      \"returned\": \"<boolean>\",\n      \"startDate\": \"<dateTime>\",\n      \"endDate\": \"<dateTime>\"\n    }\n  ]\n}"
+										}
+									]
+								},
+								{
+									"name": "Create a new book lending record",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"userId\": \"18c2177e-b476-4876-827d-b332aa4038f2\",\n  \"bookId\": \"623b8667-9261-41d3-9b97-d633a143ea38\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/booklendings",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"booklendings"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "A successful response.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"userId\": \"<string>\",\n  \"bookId\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/booklendings",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"booklendings"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"bookLending\": {\n    \"id\": \"<string>\",\n    \"userId\": \"<string>\",\n    \"bookId\": \"<string>\",\n    \"returned\": \"<boolean>\",\n    \"startDate\": \"<dateTime>\",\n    \"endDate\": \"<dateTime>\"\n  }\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "//localhost:8082"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}

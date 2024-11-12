@@ -1,0 +1,503 @@
+{
+	"info": {
+		"_postman_id": "9d361a94-a916-4168-b544-b416ca2858d0",
+		"name": "Author Service",
+		"description": "Service to handle author management",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19163613",
+		"_collection_link": "https://www.postman.com/martian-resonance-137574/workspace/books-api/collection/19163613-9d361a94-a916-4168-b544-b416ca2858d0?action=share&source=collection_link&creator=19163613"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "v1",
+					"item": [
+						{
+							"name": "authors",
+							"item": [
+								{
+									"name": "{id}",
+									"item": [
+										{
+											"name": "Retrieve a specific author by ID",
+											"request": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/authors/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"authors",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "30238c0c-38f7-4e5d-8857-a0bddf0000bb",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "A successful response.",
+													"originalRequest": {
+														"method": "GET",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/authors/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"authors",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"author\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"birthdate\": \"<dateTime>\"\n  },\n  \"books\": [\n    {\n      \"id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"isbn\": \"<string>\",\n      \"authorId\": \"<string>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"isbn\": \"<string>\",\n      \"authorId\": \"<string>\"\n    }\n  ]\n}"
+												}
+											]
+										},
+										{
+											"name": "Delete an author by ID",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/authors/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"authors",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "9c136338-ec6e-4613-a437-85039464f7bb",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "A successful response.",
+													"originalRequest": {
+														"method": "DELETE",
+														"header": [
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/authors/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"authors",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"response\": {\n    \"message\": \"<string>\"\n  }\n}"
+												}
+											]
+										},
+										{
+											"name": "Update an existing author",
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"Ernest Hemingway\",\n  \"birthdate\": \"1899-07-21\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/authors/:id",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"authors",
+														":id"
+													],
+													"variable": [
+														{
+															"key": "id",
+															"value": "<string>",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"response": [
+												{
+													"name": "A successful response.",
+													"originalRequest": {
+														"method": "PUT",
+														"header": [
+															{
+																"key": "Content-Type",
+																"value": "application/json"
+															},
+															{
+																"key": "Accept",
+																"value": "application/json"
+															}
+														],
+														"body": {
+															"mode": "raw",
+															"raw": "{\n  \"name\": \"<string>\",\n  \"birthdate\": \"<string>\"\n}",
+															"options": {
+																"raw": {
+																	"headerFamily": "json",
+																	"language": "json"
+																}
+															}
+														},
+														"url": {
+															"raw": "{{baseUrl}}/api/v1/authors/:id",
+															"host": [
+																"{{baseUrl}}"
+															],
+															"path": [
+																"api",
+																"v1",
+																"authors",
+																":id"
+															],
+															"variable": [
+																{
+																	"key": "id"
+																}
+															]
+														}
+													},
+													"status": "OK",
+													"code": 200,
+													"_postman_previewlanguage": "json",
+													"header": [
+														{
+															"key": "Content-Type",
+															"value": "application/json"
+														}
+													],
+													"cookie": [],
+													"body": "{\n  \"author\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"birthdate\": \"<dateTime>\"\n  },\n  \"response\": {\n    \"message\": \"<string>\"\n  }\n}"
+												}
+											]
+										}
+									]
+								},
+								{
+									"name": "Retrieve all authors with pagination",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/authors",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"authors"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "<integer>",
+													"disabled": true
+												},
+												{
+													"key": "pageSize",
+													"value": "-1",
+													"disabled": true
+												},
+												{
+													"key": "filter",
+													"value": "<string>",
+													"disabled": true
+												},
+												{
+													"key": "sort",
+													"value": "<string>",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "A successful response.",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/authors?page=<integer>&pageSize=<integer>&filter=<string>&sort=<string>",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"authors"
+													],
+													"query": [
+														{
+															"key": "page",
+															"value": "<integer>"
+														},
+														{
+															"key": "pageSize",
+															"value": "<integer>"
+														},
+														{
+															"key": "filter",
+															"value": "<string>"
+														},
+														{
+															"key": "sort",
+															"value": "<string>"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"pagination\": {\n    \"page\": \"<integer>\",\n    \"pageSize\": \"<integer>\",\n    \"totalPages\": \"<int64>\",\n    \"totalRows\": \"<int64>\"\n  },\n  \"authors\": [\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"birthdate\": \"<dateTime>\"\n    },\n    {\n      \"id\": \"<string>\",\n      \"name\": \"<string>\",\n      \"birthdate\": \"<dateTime>\"\n    }\n  ],\n  \"response\": {\n    \"message\": \"<string>\"\n  }\n}"
+										}
+									]
+								},
+								{
+									"name": "Create a new author",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Ernest Hemingway\",\n  \"birthdate\": \"1899-07-21\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/v1/authors",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"v1",
+												"authors"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "A successful response.",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"name\": \"<string>\",\n  \"birthdate\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/v1/authors",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"v1",
+														"authors"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"author\": {\n    \"id\": \"<string>\",\n    \"name\": \"<string>\",\n    \"birthdate\": \"<dateTime>\"\n  },\n  \"response\": {\n    \"message\": \"<string>\"\n  }\n}"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "//localhost:8081"
+		}
+	]
+}

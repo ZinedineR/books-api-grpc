@@ -15,7 +15,7 @@ type CategoryExternalImpl struct {
 func NewCategoryExternalImpl(
 	config *config.Config,
 ) CategorySvcExternal {
-	author := categories.NewCategoryServiceClient(server.NewGRPCListenerClient(config.AppEnvConfig.CategoryGRPCPort))
+	author := categories.NewCategoryServiceClient(server.NewGRPCListenerClient(config.AppEnvConfig.CategoryListenerHost, config.AppEnvConfig.CategoryGRPCPort))
 	return &CategoryExternalImpl{
 		config:     config,
 		categories: author,

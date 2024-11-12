@@ -137,6 +137,7 @@ func (h *AuthorGRPCHandler) Detail(
 			Isbn:       book.ISBN,
 			AuthorId:   book.AuthorId,
 			CategoryId: book.CategoryId,
+			Stock:      uint32(book.Stock),
 		}
 	}
 	return &authors.GetAuthorByIDResponse{

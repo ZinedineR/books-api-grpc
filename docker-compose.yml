@@ -1,24 +1,247 @@
 version: '3.8'
+networks:
+  service-conn:
+    driver: bridge
 
 services:
-  books-api-web:
-    build: .
-    command: ["./books-api-web"]
+  postgres-books-user:
+    image: postgres:14.12
+    container_name: postgres-books-user
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: user
     ports:
-      - "9004:9004"
+      - "5432:5432"
+    networks:
+      - service-conn
+  postgres-books-author:
+    image: postgres:14.12
+    container_name: postgres-books-author
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: author
+    ports:
+      - "5433:5432"
+    networks:
+      - service-conn
+  postgres-books-category:
+    image: postgres:14.12
+    container_name: postgres-books-category
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: category
+    ports:
+      - "5434:5432"
+    networks:
+      - service-conn
+  postgres-books-book:
+    image: postgres:14.12
+    container_name: postgres-books-book
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: book
+    ports:
+      - "5435:5432"
+    networks:
+      - service-conn
+  books-api-user:
+    build: .
+    command: ["./books-api-user"]
+    networks:
+      - service-conn
+    ports:
+      - "8080:8080"  # Mapping to USER_HTTP_PORT
     environment:
       APP_NAME: "books-api"
       APP_ENV: "development"
       GIN_MODE: "release"
       APP_DEBUG: "true"
       APP_VERSION: "v1"
-      HTTP_PORT: "9004"
       JWT_SECRET_ACCESS_TOKEN: "wkhB8NarrReKujasQzlRaOQGOO4S1G884ol9SIyQ7Fr4zxLBJI9Ezml4DeaisAss"
-      HMAC_SECRET_ACCESS_TOKEN: "HmacSHA512"
-      DB_CONNECTION: "sqlite"
-      DB_PREFIX: "goodreads_"
+
+      # Port Management
+      USER_HTTP_PORT: "8080"
+      USER_GRPC_PORT: "50050"
+      USER_LISTENER_HOST: "books-api-user"
+      AUTHOR_HTTP_PORT: "8081"
+      AUTHOR_GRPC_PORT: "50051"
+      AUTHOR_LISTENER_HOST: "books-api-author"
+      BOOK_HTTP_PORT: "8082"
+      BOOK_GRPC_PORT: "50052"
+      BOOK_LISTENER_HOST: "books-api-book"
+      CATEGORY_HTTP_PORT: "8083"
+      CATEGORY_GRPC_PORT: "50053"
+      CATEGORY_LISTENER_HOST: "books-api-category"
+
+      # Database Configuration
+      DB_CONNECTION: "postgres"
+      DB_HOST: "postgres-books-user"
+      DB_PORT: "5432"
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "postgres"
+      USER_DB_DATABASE: "user"
+      AUTHOR_DB_DATABASE: "author"
+      BOOK_DB_DATABASE: "book"
+      CATEGORY_DB_DATABASE: "category"
+      DB_PREFIX: "books_api_"
+
+      # CORS Configuration
       ALLOW_ORIGINS: "*"
       ALLOW_METHODS: "POST,GET,PUT,DELETE,OPTIONS"
       ALLOW_HEADERS: "*"
+
+      # Log Configuration
       LOG_PATH: "./logs/"
     restart: on-failure
+  books-api-author:
+    build: .
+    command: [ "./books-api-author" ]
+    networks:
+      - service-conn
+    ports:
+      - "8081:8081"  # Mapping to AUTHOR_HTTP_PORT
+    environment:
+      APP_NAME: "books-api"
+      APP_ENV: "development"
+      GIN_MODE: "release"
+      APP_DEBUG: "true"
+      APP_VERSION: "v1"
+      JWT_SECRET_ACCESS_TOKEN: "wkhB8NarrReKujasQzlRaOQGOO4S1G884ol9SIyQ7Fr4zxLBJI9Ezml4DeaisAss"
+
+      # Port Management
+      USER_HTTP_PORT: "8080"
+      USER_GRPC_PORT: "50050"
+      USER_LISTENER_HOST: "books-api-user"
+      AUTHOR_HTTP_PORT: "8081"
+      AUTHOR_GRPC_PORT: "50051"
+      AUTHOR_LISTENER_HOST: "books-api-author"
+      BOOK_HTTP_PORT: "8082"
+      BOOK_GRPC_PORT: "50052"
+      BOOK_LISTENER_HOST: "books-api-book"
+      CATEGORY_HTTP_PORT: "8083"
+      CATEGORY_GRPC_PORT: "50053"
+      CATEGORY_LISTENER_HOST: "books-api-category"
+
+      # Database Configuration
+      DB_CONNECTION: "postgres"
+      DB_HOST: "postgres-books-author"
+      DB_PORT: "5432"
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "postgres"
+      USER_DB_DATABASE: "user"
+      AUTHOR_DB_DATABASE: "author"
+      BOOK_DB_DATABASE: "book"
+      CATEGORY_DB_DATABASE: "category"
+      DB_PREFIX: "books_api_"
+
+      # CORS Configuration
+      ALLOW_ORIGINS: "*"
+      ALLOW_METHODS: "POST,GET,PUT,DELETE,OPTIONS"
+      ALLOW_HEADERS: "*"
+
+      # Log Configuration
+      LOG_PATH: "./logs/"
+    restart: on-failure
+  books-api-category:
+    build: .
+    command: [ "./books-api-category" ]
+    networks:
+      - service-conn
+    ports:
+      - "8083:8083"  # Mapping to CATEGORY_HTTP_PORT
+    environment:
+      APP_NAME: "books-api"
+      APP_ENV: "development"
+      GIN_MODE: "release"
+      APP_DEBUG: "true"
+      APP_VERSION: "v1"
+      JWT_SECRET_ACCESS_TOKEN: "wkhB8NarrReKujasQzlRaOQGOO4S1G884ol9SIyQ7Fr4zxLBJI9Ezml4DeaisAss"
+
+      # Port Management
+      USER_HTTP_PORT: "8080"
+      USER_GRPC_PORT: "50050"
+      USER_LISTENER_HOST: "books-api-user"
+      AUTHOR_HTTP_PORT: "8081"
+      AUTHOR_GRPC_PORT: "50051"
+      AUTHOR_LISTENER_HOST: "books-api-author"
+      BOOK_HTTP_PORT: "8082"
+      BOOK_GRPC_PORT: "50052"
+      BOOK_LISTENER_HOST: "books-api-book"
+      CATEGORY_HTTP_PORT: "8083"
+      CATEGORY_GRPC_PORT: "50053"
+      CATEGORY_LISTENER_HOST: "books-api-category"
+
+      # Database Configuration
+      DB_CONNECTION: "postgres"
+      DB_HOST: "postgres-books-category"
+      DB_PORT: "5432"
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "postgres"
+      USER_DB_DATABASE: "user"
+      AUTHOR_DB_DATABASE: "author"
+      BOOK_DB_DATABASE: "book"
+      CATEGORY_DB_DATABASE: "category"
+      DB_PREFIX: "books_api_"
+
+      # CORS Configuration
+      ALLOW_ORIGINS: "*"
+      ALLOW_METHODS: "POST,GET,PUT,DELETE,OPTIONS"
+      ALLOW_HEADERS: "*"
+
+      # Log Configuration
+      LOG_PATH: "./logs/"
+    restart: on-failure
+  books-api-book:
+    build: .
+    command: [ "./books-api-book" ]
+    networks:
+      - service-conn
+    ports:
+      - "8082:8082"  # Mapping to BOOK_HTTP_PORT
+    environment:
+      APP_NAME: "books-api"
+      APP_ENV: "development"
+      GIN_MODE: "release"
+      APP_DEBUG: "true"
+      APP_VERSION: "v1"
+      JWT_SECRET_ACCESS_TOKEN: "wkhB8NarrReKujasQzlRaOQGOO4S1G884ol9SIyQ7Fr4zxLBJI9Ezml4DeaisAss"
+
+      # Port Management
+      USER_HTTP_PORT: "8080"
+      USER_GRPC_PORT: "50050"
+      USER_LISTENER_HOST: "books-api-user"
+      AUTHOR_HTTP_PORT: "8081"
+      AUTHOR_GRPC_PORT: "50051"
+      AUTHOR_LISTENER_HOST: "books-api-author"
+      BOOK_HTTP_PORT: "8082"
+      BOOK_GRPC_PORT: "50052"
+      BOOK_LISTENER_HOST: "books-api-book"
+      CATEGORY_HTTP_PORT: "8083"
+      CATEGORY_GRPC_PORT: "50053"
+      CATEGORY_LISTENER_HOST: "books-api-category"
+
+      # Database Configuration
+      DB_CONNECTION: "postgres"
+      DB_HOST: "postgres-books-book"
+      DB_PORT: "5432"
+      DB_USERNAME: "postgres"
+      DB_PASSWORD: "postgres"
+      USER_DB_DATABASE: "user"
+      AUTHOR_DB_DATABASE: "author"
+      BOOK_DB_DATABASE: "book"
+      CATEGORY_DB_DATABASE: "category"
+      DB_PREFIX: "books_api_"
+
+      # CORS Configuration
+      ALLOW_ORIGINS: "*"
+      ALLOW_METHODS: "POST,GET,PUT,DELETE,OPTIONS"
+      ALLOW_HEADERS: "*"
+
+      # Log Configuration
+      LOG_PATH: "./logs/"
+    restart: on-failure
+

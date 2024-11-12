@@ -72,6 +72,7 @@ func BookGRPCToEntity(input *books.Book) *entity.Book {
 		ISBN:       input.Isbn,
 		AuthorId:   input.AuthorId,
 		CategoryId: input.CategoryId,
+		Stock:      uint(input.Stock),
 	}
 }
 

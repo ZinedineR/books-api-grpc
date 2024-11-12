@@ -15,7 +15,7 @@ type UserExternalImpl struct {
 func NewUserExternalImpl(
 	config *config.Config,
 ) UserSvcExternal {
-	author := users.NewUserServiceClient(server.NewGRPCListenerClient(config.AppEnvConfig.UserGRPCPort))
+	author := users.NewUserServiceClient(server.NewGRPCListenerClient(config.AppEnvConfig.UserListenerHost, config.AppEnvConfig.UserGRPCPort))
 	return &UserExternalImpl{
 		config: config,
 		users:  author,
