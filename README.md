@@ -84,3 +84,44 @@ d) Book Stock Management
 e) Borrowing and Returning Books
 - CRUD with connection to Author, Category services and Book Repository
 f) Search and Recommendation feature
+- Suppose user would like to search a book, then they go to /api/v1/books with filter query
+  /api/v1/books?filter=title:gatsby:like
+- As for reccomendation, I have no clue how to make it without MLM, but I suppose you can add with more filtering of the stock
+  /api/v1/books?filter=stock:0:gte
+- Head to Filter and Sort Rules below for further documentation
+- Search feature works for every [GET] /api/v1 
+
+Filter rules
+
+### Rules Filter
+rule:
+* {Name of Field}:{value}:{Symbol}
+
+Symbols:
+* eq (=)
+* lt (<)
+* gt (>)
+* lte (<=)
+* gte (>=)
+* in (in)
+* like (like)
+
+
+Example:
+``
+?filter=title:gatsby:like|stock:0:gte
+``
+
+### Rules Sort
+rule:
+* {Name of Field}:{Symbol}
+
+Symbols:
+* asc
+* desc
+
+
+Example:
+``
+sort=id:desc
+``
